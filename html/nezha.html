@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta name='keywords' content='哪吒面板'>
+<meta name='date' content='2024-12-19'>
+<meta name='category' content='运维'>
+<title>哪吒面板搭建</title>
+<!-- 可引入模板CSS -->
+<style>img { max-width: 100%; height: auto; }</style>
+</head>
+<body>
+<div id='metadata'>
+<p><strong>Title:</strong> 哪吒面板搭建</p>
+<p><strong>Published:</strong> 2024-12-19</p>
+<p><strong>Description:</strong> </p>
+<p><strong>Image:</strong> https://oss.onani.cn/fuwari-blog/img/QmXCNqtUh761g3rYS3dNeysiZTEBgk1ozamWUNy3bHXnvC</p>
+<p><strong>Tags:</strong> ['哪吒面板']</p>
+<p><strong>Category:</strong> 运维</p>
+<p><strong>Draft:</strong> False</p>
+<p><strong>Lang:</strong> </p>
+</div>
+<hr>
+<h1>本文不如这个项目，它直接用CF当API</h1>
+<p>https://github.com/yumusb/nezha-new</p>
+<hr />
+<h1>配置Zerotier</h1>
+<p>将你的面板（Dashboard）服务器，后端（Agent）服务器全部加入同一个Zerotier网络组，并且保证互相通信正常</p>
+<h1>安装哪吒面板（Dashboard）</h1>
+<p>前往Release下载你作业系统的可执行文件：https://github.com/nezhahq/nezha/releases/latest</p>
+<p>启动，进入WebUI：http://localhost:8008</p>
+<p>右上角选择登录，默认账密为admin</p>
+<p>右上头像 -&gt; 系统设置 -&gt; 用户 -&gt; +
+创建新用户，然后以新用户登录，最后删除默认的admin用户</p>
+<p>再次前往系统设置，更改Agent上报地址为 你的Dashboard的Zerotier IP:8008（如：10.147.17.1:8008）。不开启TLS</p>
+<p>回到管理后台首页，选择 服务器 -&gt; 安装命令。然后依次将命令在Agent上执行。如果正常，稍后将会在后台看到新服务器上线</p>
+<h1>配置Cloudflare Tunnel</h1>
+<p>在DashBoard服务器安装Cloudflared，创建一个新Tunnel，指向localhost:8008，并绑定你托管在Cloudflare的域名</p>
+<h1>成品展示</h1>
+<p>https://k.onani.cn</p>
+<p><img alt="9b391b622b29e6a0b148dc1123e78994" src="https://oss.onani.cn/fuwari-blog/img/QmXCNqtUh761g3rYS3dNeysiZTEBgk1ozamWUNy3bHXnvC" /></p><footer>
+    <hr>
+    <div id="tcomment"></div>
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+    <script>
+    twikoo.init({
+      envId: 'https://ai-twikoo.onani.cn',
+      el: '#tcomment',
+    })
+    </script>
+    <hr>
+    <p>2025 AcoFork  版权所有 / Powerby fxxkssr-blog / <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">许可协议 · CC BY-NC-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>

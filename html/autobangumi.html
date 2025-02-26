@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='使用AutuBangumi连接qBittorrent下载番剧，然后使用刮削软件刮削，设置一遍，享受终身'>
+<meta name='keywords' content='AutoBangumi'>
+<meta name='date' content='2025-02-25'>
+<meta name='category' content='NAS'>
+<title>教你搭建自己的番剧库，实现自动追番！</title>
+<!-- 可引入模板CSS -->
+<style>img { max-width: 100%; height: auto; }</style>
+</head>
+<body>
+<div id='metadata'>
+<p><strong>Title:</strong> 教你搭建自己的番剧库，实现自动追番！</p>
+<p><strong>Published:</strong> 2025-02-25</p>
+<p><strong>Description:</strong> 使用AutuBangumi连接qBittorrent下载番剧，然后使用刮削软件刮削，设置一遍，享受终身</p>
+<p><strong>Image:</strong> https://oss.onani.cn/fuwari-blog/img/QmXYf2u6BZMseAzjPUhcHsdfdhQpc3XkdjuEi4VvE1BkTn.webp</p>
+<p><strong>Tags:</strong> ['AutoBangumi']</p>
+<p><strong>Category:</strong> NAS</p>
+<p><strong>Draft:</strong> False</p>
+<p><strong>Lang:</strong> zh_CN</p>
+</div>
+<hr>
+<h1>实现流程：</h1>
+<ol>
+<li>每当新番更新时AutoBangumi自动向qb推送种子下载并且重命名</li>
+<li>刮削软件（如Plex，飞牛影视设置定时搜索媒体库）</li>
+<li>你只需要选番，然后等待下载和看就行了 ~~实际并非~~</li>
+</ol>
+<h3>安装qbittorrent</h3>
+<blockquote>
+<p>用于下载番剧</p>
+</blockquote>
+<p>各系统安装方法各有不同。如果你安装的是非nox版本，记得在设置打开WebUI，并监听0.0.0.0:8080</p>
+<p>Windows：<a href="https://sourceforge.net/projects/qbittorrent/files/qbittorrent-win32">SourceForge</a></p>
+<p>Linux：<code>apt/yum install qbittorrent-nox</code></p>
+<p>Docker：https://github.com/linuxserver/docker-qbittorrent</p>
+<p>Tracker服务器大全：<a href="https://www.yaozuopan.top/index.php/archives/1014/#:~:text=%E4%B8%AD%E5%9B%BD%E5%8F%AF%E7%94%A8%E7%9A%84%20BT%20T">中国可用的 BT Tracker 服务器列表，每24小时自动更新 - 小小编程</a></p>
+<p><img alt="8938ee430e5f74109c34c8c6d48e0e4f619cbeff.webp" src="https://oss.onani.cn/fuwari-blog/img/29e0e4c26c15463ff692aabcee747950e2d029d3.webp" /></p>
+<h3>安装<a href="https://www.autobangumi.org/">AutoBangumi</a></h3>
+<blockquote>
+<p>用于获取你订阅的番剧并在更新时自动发起下载任务</p>
+</blockquote>
+<ol>
+<li>
+<p>安装Docker，各系统安装方式各有不同</p>
+</li>
+<li>
+<p>找一个你喜欢的文件夹创建<code>docker-compose.yaml</code> ，并写入内容：</p>
+</li>
+</ol>
+<p>```yaml
+version: "3.8"</p>
+<p>services:
+  AutoBangumi:
+    image: "ghcr.io/estrellaxd/auto_bangumi:latest"
+    container_name: AutoBangumi
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    ports:
+      - "7892:7892"
+    network_mode: bridge
+    restart: unless-stopped
+    dns:
+      - 223.5.5.5
+    environment:
+      - TZ=Asia/Shanghai
+      - PGID=$(id -g)
+      - PUID=$(id -u)
+      - UMASK=022
+```</p>
+<ol>
+<li>
+<p>运行命令：docker compose up -d</p>
+</li>
+<li>
+<p>进入localhost:7892 ，默认账号：admin，默认密码：adminadmin</p>
+</li>
+<li>
+<p>点左边的设置图标 -&gt; 下载设置，填入下载器信息，然后点击右下角的应用，直到右上角亮绿灯</p>
+</li>
+</ol>
+<p><img alt="QmbVcrgZ2C2FTt6QdfKsUkVQz9SCiQiyq1WCbphDiGW2mM.webp" src="https://oss.onani.cn/fuwari-blog/img/94f407121de7816ee2dff78f948dcc2ded27b28f.webp" /></p>
+<ol>
+<li>
+<p>前往蜜柑计划，注册账号，并订阅你想要的番剧（复制）
+   <img alt="QmXq7DcBkA4EecJikQE4snvPkNU2NQLy1EXUpAructteah.webp" src="https://oss.onani.cn/fuwari-blog/img/0e22eab8db6ed2441f3d3be0b10d51944867df0a.webp" /></p>
+</li>
+<li>
+<p>回到 AutoBangumi，点击右上角的 +，添加 RSS（粘贴）</p>
+</li>
+<li>
+<p>静静等待，不出意外 AutoBangumi 会自动下载你订阅的番剧了（如果没有可以查看AutoBangumi的日志，或者尝试重启容器）</p>
+</li>
+</ol>
+<h3>下载旧集或已完结番剧</h3>
+<p>首先推荐几个资源网（梯子自备）：</p>
+<ol>
+<li><a href="https://acg.rip">ACG.RIP</a></li>
+<li><a href="https://share.acgnx.se">末日动漫资源网</a></li>
+<li>蜜柑计划 国内直连：1. https://mikanime.tv 2. https://hadestian.cn 3. https://mk.misakaae.com 4. https://mikan.yujiangqaq.com 5. RSS镜像站：https://mikanani.longc.top</li>
+<li>蜜柑计划 需翻墙：https://mikanani.me
+   然后找你想要的番剧下载</li>
+</ol>
+<h4>规范重命名</h4>
+<blockquote>
+<p>为了让软件能正确刮削元数据和剧集，我们需要规范重命名。</p>
+</blockquote>
+<p>注意！你只需要确保番剧名正确就可以了！子目录可以通过后面的脚本自动重命名！如果你不确定番剧名请前往TMDB搜索：<a href="themoviedb.org">The Movie Database (TMDB) </a></p>
+<blockquote>
+<p>一级目录（qb 设置的下载目录）：不需要重命名</p>
+<p>二级目录（番剧名，必须正确）：总之就是非常可爱</p>
+<p>三级目录：（番剧的哪一季）：Season 1</p>
+<p>四级目录：（番剧的哪一季的哪一集）：S01E01.MP4</p>
+</blockquote>
+<ol>
+<li>
+<p>~~前往Episode-ReName，克隆仓库~~  ~~（已被删库，可尝试<a href="https://alist.onani.cn/Episode-ReName.zip">Episode-ReName.zip | Onani-AList</a> )~~ AList已死，请尝试天翼云盘： https://cloud.189.cn/web/share?code=iQVjUnzE7fQj （访问码：i8sk）</p>
+</li>
+<li>
+<p>Win 可以通过右键菜单自动获取路径版.bat 通过右键一级目录选择自动剧集命名 。若使用.py 脚本则只能通过<code>python3 EpisodeReName.py "D:/qbdownloads/bangumi"</code></p>
+</li>
+</ol>
+<p><strong>小贴士：</strong> 可以使用<a href="https://onani.cn/RaiDrive">RaiDrive</a>或<a href="/SSHFS">SSHFS</a>将远程的Linux文件映射到Windows上，管理番剧更方便
+<img alt="QmY7KM2MjudNksqvSkkFmwFgjjdD7ZQKLDaVPXR3jnXoxw.webp" src="https://oss.onani.cn/fuwari-blog/img/5cf6dfe73164f6a869a59817df53f939e936ab00.webp" /></p>
+<h3>安装 Plex（或者安装飞牛云NAS）</h3>
+<blockquote>
+<p>用于观看番剧</p>
+</blockquote>
+<ol>
+<li>
+<p>下载Plex Media Server</p>
+</li>
+<li>
+<p>启动。默认端口 32400（如果进去是一堆乱码，添加/web后缀。例如：192.168.124.25:32400/web）</p>
+</li>
+<li>
+<p>选择你的媒体库文件夹</p>
+</li>
+<li>
+<p>开启远程访问，右上角设置 -&gt; 远程访问</p>
+</li>
+</ol>
+<p>图为飞牛影视</p>
+<p><img alt="Qmf8Q1D9fUoFbu9MQsQHvaz13p3YV2XguR3RqUAse2KBEa.webp" src="https://oss.onani.cn/fuwari-blog/img/acbde8bfd7395a8b5c744b9f1c550f3caac6c342.webp" /></p>
+<p>爽看</p><footer>
+    <hr>
+    <div id="tcomment"></div>
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+    <script>
+    twikoo.init({
+      envId: 'https://ai-twikoo.onani.cn',
+      el: '#tcomment',
+    })
+    </script>
+    <hr>
+    <p>2025 AcoFork  版权所有 / Powerby fxxkssr-blog / <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">许可协议 · CC BY-NC-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>

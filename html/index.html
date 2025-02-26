@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AcoFork Blog - HTML限定版</title>
+    <!-- Umami -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="a66a5fd4-98b0-4108-8606-cb7094f380ac"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&amp;spec=5">
+    <style>
+      /* 简单样式 */
+      #filters { margin-bottom: 1em; }
+      #filters label { margin-right: 0.5em; }
+    </style>
+</head>
+<body>
+    <h1><a href="https://link.me/acofork" target="_blank">AcoFork</a> Blog - HTML限定版</h1>
+        <!-- 新增：最新提交展示区域 -->
+        <div id="commits">
+            <h4>最新提交</h4>
+            <ul id="commitList"></ul>
+        </div>
+    <!-- 筛选区域 -->
+    <div id="filters">
+        <label for="search">搜索：</label>
+        <input id="search" type="text" placeholder="文章标题、标签、分类">
+        <label for="categoryFilter">分类：</label>
+        <select id="categoryFilter">
+            <option value="">全部</option>
+        </select>
+        <label for="tagFilter">标签：</label>
+        <select id="tagFilter">
+            <option value="">全部</option>
+        </select>
+    </div>
+    <div id="articles">
+        <!-- 文章链接将通过 JavaScript 加载显示 -->
+    </div>
+    <div id="footer">
+        <!-- 页脚内容将由 footer.html 填充 -->
+    </div>
+    <script>
+        let routes = [];
+        // 模糊匹配函数：移除查询中的空格，判断是否为子序列
+        function fuzzyMatch(query, text) {
+            query = query.replace(/\s+/g, '');
+            let j = 0;
+            for (let i = 0; i < text.length && j < query.length; i++) {
+                if (text[i] === query[j]) j++;
+            }
+            return j === query.length;
+        }
+        // 根据筛选条件显示文章列表，支持模糊搜索
+        function renderArticles() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const categoryValue = document.getElementById('categoryFilter').value.toLowerCase();
+            const tagValue = document.getElementById('tagFilter').value.toLowerCase();
+            const container = document.getElementById('articles');
+            container.innerHTML = "";  // 清空
+            routes.forEach(item => {
+                const title = item.title.toLowerCase();
+                const tags = item.tags.toLowerCase();
+                const category = item.category.toLowerCase();
+                // 如果搜索关键字存在，则要求在文章标题、标签或分类中模糊匹配至少一项
+                if(searchInput && 
+                   !fuzzyMatch(searchInput, title) &&
+                   !fuzzyMatch(searchInput, tags) &&
+                   !fuzzyMatch(searchInput, category)) {
+                    return;
+                }
+                if (categoryValue && category !== categoryValue) return;
+                if (tagValue && tags.indexOf(tagValue) === -1) return;
+                // 显示文章链接
+                const a = document.createElement('a');
+                a.href = item.route;
+                a.textContent = item.title;
+                container.appendChild(a);
+                // 在链接后面追加发布日期（如果存在）
+                if(item.published) {
+                    const span = document.createElement('span');
+                    span.textContent = " (" + item.published + ")";
+                    container.appendChild(span);
+                }
+                container.appendChild(document.createElement('br'));
+            });
+        }
+        // 初始化筛选下拉框
+        function initFilters() {
+            const categories = new Set();
+            const tags = new Set();
+            routes.forEach(item => {
+                if(item.category) categories.add(item.category);
+                if(item.tags) {
+                    // tags可能为逗号分隔的字符串
+                    item.tags.split(',').forEach(tag => {
+                        const trimmed = tag.trim();
+                        if(trimmed) tags.add(trimmed);
+                    });
+                }
+            });
+            const categorySelect = document.getElementById('categoryFilter');
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                categorySelect.appendChild(option);
+            });
+            const tagSelect = document.getElementById('tagFilter');
+            tags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag;
+                option.textContent = tag;
+                tagSelect.appendChild(option);
+            });
+        }
+        // 添加筛选事件监听
+        document.getElementById('search').addEventListener('input', renderArticles);
+        document.getElementById('categoryFilter').addEventListener('change', renderArticles);
+        document.getElementById('tagFilter').addEventListener('change', renderArticles);
+        // 加载 routes.json 并初始化筛选
+        fetch('routes.json')
+        .then(response => response.json())
+        .then(data => {
+            routes = data;
+            initFilters();
+            renderArticles();
+        })
+        .catch(error => console.error('Error loading routes:', error));
+        // 加载独立页脚
+        fetch('footer.html')
+        .then(response => response.text())
+        .then(text => {
+            document.getElementById('footer').innerHTML = text;
+        })
+        .catch(error => console.error('Error loading footer:', error));
+        // 加载最新提交信息
+        fetch('https://api-github-com.onani.cn/repos/afoim/fxxkssr-blog/commits?sha=main')
+        .then(response => response.json())
+        .then(data => {
+            const commitList = document.getElementById('commitList');
+            data.slice(0, 5).forEach(commit => {
+                const author = commit.commit.author.name;
+                const date = commit.commit.author.date;
+                const message = commit.commit.message;
+                const url = commit.html_url;
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${url}" target="_blank">${message}</a> - ${author} (${date})`;
+                commitList.appendChild(li);
+            });
+        })
+        .catch(error => console.error('Error loading commits:', error));
+    </script>
+</body>
+</html>

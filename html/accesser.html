@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='使用Accesser代理HTTP连接，通过不发送ServerName来绕过GFW的SNI阻断'>
+<meta name='keywords' content='Accesser'>
+<meta name='date' content='2024-10-28'>
+<meta name='category' content='开发'>
+<title>干翻GFW的SNI阻断，还我们一个不受限制的互联网！</title>
+<!-- 可引入模板CSS -->
+<style>img { max-width: 100%; height: auto; }</style>
+</head>
+<body>
+<div id='metadata'>
+<p><strong>Title:</strong> 干翻GFW的SNI阻断，还我们一个不受限制的互联网！</p>
+<p><strong>Published:</strong> 2024-10-28</p>
+<p><strong>Description:</strong> 使用Accesser代理HTTP连接，通过不发送ServerName来绕过GFW的SNI阻断</p>
+<p><strong>Image:</strong> https://oss.onani.cn/fuwari-blog/img/6d0a5793fe6b1f11cba9a4912fba4392be5004c2.webp</p>
+<p><strong>Tags:</strong> ['Accesser']</p>
+<p><strong>Category:</strong> 开发</p>
+<p><strong>Draft:</strong> False</p>
+<p><strong>Lang:</strong> </p>
+</div>
+<hr>
+<h1>Accesser是什么？</h1>
+<p>::github{repo="URenko/Accesser"}</p>
+<p>Accesser是一个HTTP代理。它通过中间人的身份处理终端的HTTP出口流量，以绕过SNI阻断。我们正常访问网站时，客户端会发送Client Hello，而这个报文是明文，并且通常会携带ServerName，这个时候GFW就能通过检测ServerName来进行阻断，代替网站向客户端发送一个RST报文重置连接，做到网站被“墙”的效果</p>
+<p>而通过Accesser代理后，它会抹掉ServerName然后发送Client Hello。这个时候，如果服务端支持域前置，则会返回客户端一个默认的SSL证书（公钥），然后客户端就能使用这个公钥再次发送一个加密的Client Hello，此时携带上ServerName就不会被GFW阻断了。但是，如果客户端在第一次我们拿公钥的时候拒绝了空ServerName的Client Hello，那这个办法就失效了，不过大部分网站是支持这样做的</p>
+<h3>Windows</h3>
+<ul>
+<li>
+<p>前往开头的的Github仓库</p>
+</li>
+<li>
+<p>下载最新的Release。一般有一个<code>accesser.exe</code></p>
+</li>
+<li>
+<p>直接打开这个软件，看到这个画面即可<img alt="" src="https://oss.onani.cn/fuwari-blog/img/c2eed28c-6e5d-43a3-a016-8f1a38a53cbd.webp" /></p>
+</li>
+<li>
+<p>它的原理是自动设置系统代理，如果你使用了一些别的代理软件，会被覆盖<img alt="" src="https://oss.onani.cn/fuwari-blog/img/d0d8fac1-a2e5-4db2-8e25-ca5e04eb9951.webp" /></p>
+</li>
+</ul>
+<h3>Linux（以Debian12为例）</h3>
+<ul>
+<li>
+<p>安装Python：<code>apt install python3</code></p>
+</li>
+<li>
+<p>（可选）创建虚拟环境：<code>python -m venv venv</code></p>
+</li>
+<li>
+<p>（可选）进入虚拟环境：<code>source venv/bin/activate</code></p>
+</li>
+<li>
+<p>安装Accesser：<code>python3 -m pip install -U accesser</code></p>
+</li>
+<li>
+<p>运行：<code>accesser</code></p>
+</li>
+<li>
+<p>它会提示你需要信任 <code>root.crt</code> 。关闭Accesser</p>
+</li>
+<li>
+<p>我的证书文件在 <code>/root/Accesser/venv/lib/python3.11/site-packages/accesser/CERT/root.crt</code> </p>
+</li>
+<li>
+<p>cd到你的证书目录：<code>cd /root/Accesser/venv/lib/python3.11/site-packages/accesser/CERT</code></p>
+</li>
+<li>
+<p>信任证书：<code>sudo cp root.crt /usr/local/share/ca-certificates/</code></p>
+</li>
+<li>
+<p>更新证书存储：<code>sudo update-ca-certificates</code></p>
+</li>
+<li>
+<p>设置全局代理：<code>sudo nano /etc/environment</code></p>
+</li>
+<li>
+<p><code>http_proxy="http://127.0.0.1:7654"
+  https_proxy="http://127.0.0.1:7654"
+  no_proxy="localhost,127.0.0.1"</code></p>
+</li>
+<li>
+<p>重启即可</p>
+</li>
+<li>
+<p>测试连通性：<code>curl -x https://discord.com</code></p>
+</li>
+</ul><footer>
+    <hr>
+    <div id="tcomment"></div>
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+    <script>
+    twikoo.init({
+      envId: 'https://ai-twikoo.onani.cn',
+      el: '#tcomment',
+    })
+    </script>
+    <hr>
+    <p>2025 AcoFork  版权所有 / Powerby fxxkssr-blog / <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">许可协议 · CC BY-NC-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>

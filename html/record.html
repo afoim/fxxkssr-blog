@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta name='keywords' content='Record'>
+<meta name='date' content='1999-01-01'>
+<meta name='category' content='记录'>
+<title>记录</title>
+<!-- 可引入模板CSS -->
+<style>img { max-width: 100%; height: auto; }</style>
+</head>
+<body>
+<div id='metadata'>
+<p><strong>Title:</strong> 记录</p>
+<p><strong>Published:</strong> 1999-01-01</p>
+<p><strong>Description:</strong> </p>
+<p><strong>Image:</strong> </p>
+<p><strong>Tags:</strong> ['Record']</p>
+<p><strong>Category:</strong> 记录</p>
+<p><strong>Draft:</strong> False</p>
+<p><strong>Lang:</strong> zh_CN</p>
+</div>
+<hr>
+<h1>ShellClash</h1>
+<blockquote>
+<p>用于在Linux上使用CLI来进行正向代理。通过导入标准的Clash <code>config.yaml</code> 来实现</p>
+</blockquote>
+<p>https://github.com/juewuy/ShellCrash</p>
+<p>Tg通知频道：https://t.me/ShellClash</p>
+<p><code>shell
+bash -c "$(curl -kfsSl https://raw-githubusercontent-com.acofork.us.kg/juewuy/ShellClash/master/install.sh)" &amp;&amp; source /etc/profile &amp;&gt; /dev/null</code>
+打开CLI：clash、crash
+导入配置文件：6-2
+安装本地Web面板：9-4-1
+开机自启：4-1</p>
+<hr />
+<h1>Vless通用配置（不加密）</h1>
+<p><code>json
+{
+  "inbounds": [
+    {
+      "port": 1080,  // 监听端口，可以根据需要修改
+      "protocol": "vless",  // 使用 VLESS 协议
+      "settings": {
+        "clients": [
+          {
+            "id": "0721-07210721onani",  // 这里是一个 UUID，用于识别用户
+            "level": 0,  // 用户等级，设置为 0 表示普通用户
+            "email": "user@example.com"  // 用户邮箱（可选）
+          }
+        ],
+        "decryption": "none"  // 设置为 none，表示没有加密
+      },
+      "streamSettings": {
+        "network": "tcp",  // 使用 TCP 网络
+        "security": "none"  // 不使用加密，适用于 VLESS
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",  // 允许自由流量通过
+      "settings": {}
+    }
+  ],
+  "routing": {
+    "rules": []
+  }
+}</code></p>
+<hr />
+<h1>AMD笔记本优化</h1>
+<blockquote>
+<p>目标：关闭fTPM并且禁止系统重新安装、关闭Windows自动更新
+- 关闭fTPM： 组策略编辑器：<code>计算机配置 - 管理模板 - 系统 - 设备安装 - 设备安装限制 - 阻止安装与下列任何设备实例 ID 相匹配的设备</code> 填写：设备管理器中的<strong>受信任的平台模块 2.0</strong> 的<code>详细信息 - 设备实例路径</code>中的值
+- 关闭Windows自动更新：<code>计算机配置 - 管理模板 - Windows组件 - Windows更新</code>中的：
+    - 配置自动更新 - 已禁用
+    - 删除所有使用Windows更新功能的访问权限 - 已启用
+    - 不要连接任何Windows更新Internet位置 - 已启用
+    - Windows更新不包括驱动更新 - 已启用</p>
+</blockquote>
+<hr />
+<h1>VPS融合怪测试脚本</h1>
+<p><code>shell
+bash &lt;(curl -sL kejilion.sh)</code></p>
+<ul>
+<li>融合怪测试：8-32</li>
+<li>IP纯净度测试：8-4</li>
+</ul>
+<hr />
+<h1>哪吒探针Cloudflare版</h1>
+<p>https://github.com/yumusb/nezha-new</p>
+<hr />
+<h1>VPS一键魔法脚本</h1>
+<ul>
+<li>Hysteria2（UDP）：
+<code>shell
+bash &lt;(curl -fsSL https://raw.githubusercontent.com/0x0129/hysteria2/main/install.sh) -port 0721</code></li>
+<li>Vless+Trojan+Shadowsocks：
+<code>shell
+bash &lt;(curl -s -L https://git.io/v2ray.sh)</code></li>
+<li>x-ui：
+<code>shell
+bash &lt;(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)</code></li>
+</ul>
+<hr />
+<h1>Hysteria2 服务端搭建（全平台通用）</h1>
+<ol>
+<li>下载 Hysteria2 可执行文件： https://github.com/apernet/hysteria/releases</li>
+<li>创建自签名SSL/TLS证书：<ul>
+<li>创建私钥：<code>openssl genpkey -algorithm RSA -out hy2.key</code></li>
+<li>创建证书签名请求：<code>openssl req -new -key hy2.key -out hy2.csr</code></li>
+<li>创建证书：<code>openssl x509 -req -in hy2.csr -signkey hy2.key -out hy2.crt -days 9999</code></li>
+</ul>
+</li>
+<li><code>config.yaml</code>：
+```yaml
+listen: :443 </li>
+</ol>
+<p>tls:
+  cert: hy2.crt 
+  key: hy2.key </p>
+<p>auth:
+  type: password
+  password: 0721</p>
+<p>masquerade: 
+  type: proxy
+  proxy:
+    url: https://news.ycombinator.com/ 
+    rewriteHost: true
+<code>4. 启动 Hysteria2参数：`server`
+5. V2Ray客户端连接直链：</code>shell
+hysteria2://0721@10.147.17.1:443?sni=bing.com&amp;insecure=1#家里云
+```</p>
+<hr />
+<h1>Cloudflare一键魔法</h1>
+<p>下载 https://github.com/cmliu/edgetunnel/archive/refs/heads/main.zip 将它上传到Cloudflare Pages设置UUID。访问 https://你的域名.pages.dev/UUID</p>
+<hr />
+<h1>Cloudflare 优选方法</h1>
+<h3>A、AAAA、CNAME</h3>
+<ol>
+<li>B域名直接套CDN指向源站</li>
+<li>B域名开启SaaS，设置回退源为指向源站的域名，自定义主机名为A域名</li>
+<li>B域名指向优选域名，不套CDN</li>
+<li>A域名指向B域名指向的优选域名的域名 ，不套CDN</li>
+</ol>
+<h3>Cloudflare Pages</h3>
+<ol>
+<li>直接在Pages创建自定义域</li>
+<li>更改子域NS到阿里云云解析DNS</li>
+<li>在阿里云云解析DNS设置解析分流</li>
+</ol>
+<h3>Cloudflare Workers</h3>
+<ol>
+<li>直接在Workers创建路由，如：example.com/*</li>
+<li>将被设置路由的域名解析到优选域名</li>
+</ol>
+<hr />
+<h2>Cloudflare 优选域名</h2>
+<ul>
+<li><a href="https://blog.cmliussss.com/">CM大佬</a>：
+<code>cf.090227.xyz</code></li>
+<li><a href="https://www.wetest.vip/page/cloudflare/cname.html">微测网</a>：
+<code>cloudflare.182682.xyz</code></li>
+<li>移动快乐：
+<code>cf-saas.asia</code></li>
+</ul>
+<hr />
+<h1>魔法软件</h1>
+<p>Windows：</p>
+<p>https://github.com/2dust/v2rayN</p>
+<p>Linux：</p>
+<p>https://github.com/2dust/v2rayNG</p>
+<hr />
+<h1>使用Cloudflared中继RDP流量</h1>
+<p><code>shell
+cloudflared access rdp --hostname rdp.onani.cn --url rdp://localhost:3380</code></p>
+<hr />
+<h1>FRP相关</h1>
+<h3>FRP基本认证参数</h3>
+<p><code>yaml
+auth.token = "0721"</code></p>
+<h3>FRP systemd服务配置（开机自启）</h3>
+<ul>
+<li>
+<p>创建 frps.service 文件
+<code>shell
+sudo nano /etc/systemd/system/frps.service</code></p>
+</li>
+<li>
+<p>copy 以下内容到文件中
+```shell
+[Unit]</p>
+</li>
+</ul>
+<h1>服务名称，可自定义</h1>
+<p>Description = frp server
+After = network.target syslog.target
+Wants = network.target</p>
+<p>[Service]
+Type = simple</p>
+<h1>启动frps的命令，需修改为您的frps的安装路径</h1>
+<p>ExecStart = /path/to/frps -c /path/to/frps.toml</p>
+<p>[Install]
+WantedBy = multi-user.target
+```</p>
+<hr />
+<h1>Linux Deb系安装Speedtest-cli</h1>
+<p>```shell
+apt install -y lsb-release ca-certificates apt-transport-https curl gnupg dpkg
+curl -sSL https://packagecloud.io/ookla/speedtest-cli/gpgkey | gpg --dearmor &gt; /usr/share/keyrings/speedtest.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/speedtest.gpg] https://packagecloud.io/ookla/speedtest-cli/debian/ $(lsb_release -sc) main" &gt; /etc/apt/sources.list.d/speedtest.list</p>
+<p>apt update
+apt install -y speedtest
+```</p>
+<hr />
+<h1>Linux监控面版：</h1>
+<p><code>shell
+apt install s-tui</code></p>
+<hr />
+<h1>Windows超级牛逼包管理器：https://scoop.sh</h1>
+<hr />
+<h1>Linux各发行版安装注意</h1>
+<ol>
+<li>非常新的版本一般才会有Realtek有线网卡的驱动</li>
+<li>安装Debian要使用CLI安装（GUI安装会出现问题 ~~具体的问题我忘了~~）</li>
+<li>安装CentOS/Rocky一定要先安装GUI，否则会导致上不了网</li>
+<li>除了Arch连接网络使用iwd，其他发行版都可以用nmcli连接网络</li>
+</ol>
+<hr />
+<h1>国内Linux镜像注意事项</h1>
+<ol>
+<li>USTC（中科大源）经常会用JavaScript进行客户端验证，会导致wget和curl命令无法正确下载到文件。建议使用TUNA（清华源）</li>
+</ol>
+<hr />
+<h1>国内Docker镜像</h1>
+<ul>
+<li>1Panel Docker监控：https://status.1panel.top/status/docker</li>
+<li>南京大学GHCR镜像源：https://ghcr.nju.edu.cn</li>
+</ul><footer>
+    <hr>
+    <div id="tcomment"></div>
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+    <script>
+    twikoo.init({
+      envId: 'https://ai-twikoo.onani.cn',
+      el: '#tcomment',
+    })
+    </script>
+    <hr>
+    <p>2025 AcoFork  版权所有 / Powerby fxxkssr-blog / <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">许可协议 · CC BY-NC-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>
