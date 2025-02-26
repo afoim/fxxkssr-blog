@@ -133,12 +133,13 @@
             document.getElementById('footer').innerHTML = text;
         })
         .catch(error => console.error('Error loading footer:', error));
-        // 加载最新提交信息
+        // 加载最新提交信息，只显示最新一条提交
         fetch('https://api-github-com.onani.cn/repos/afoim/fxxkssr-blog/commits?sha=main')
         .then(response => response.json())
         .then(data => {
             const commitList = document.getElementById('commitList');
-            data.slice(0, 5).forEach(commit => {
+            if(data.length > 0) {
+                const commit = data[0];
                 const author = commit.commit.author.name;
                 const date = commit.commit.author.date;
                 const message = commit.commit.message;
@@ -146,7 +147,7 @@
                 const li = document.createElement('li');
                 li.innerHTML = `<a href="${url}" target="_blank">${message}</a> - ${author} (${date})`;
                 commitList.appendChild(li);
-            });
+            }
         })
         .catch(error => console.error('Error loading commits:', error));
     </script>

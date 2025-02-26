@@ -8,7 +8,9 @@ def generate_routes():
         print(f"Directory {html_dir} does not exist.")
         return
 
-    excluded_files = ["index.html", "footer.html"]
+    # 更新排除列表，仅排除 footer.html，不再排除 index.html
+    excluded_files = ["footer.html"]
+
     routes = []
     for filename in os.listdir(html_dir):
         if filename.endswith('.html') and filename.lower() not in excluded_files:
@@ -29,7 +31,7 @@ def generate_routes():
             published = match_date.group(1) if match_date else ""
             route = filename  # 使用相对路径
             routes.append({"title": title, "route": route, "tags": tags, "category": category, "published": published})
-    # 按published降序排序（假设格式为YYYY-MM-DD）
+    # 按 published 降序排序（假设格式为 YYYY-MM-DD）
     routes.sort(key=lambda r: r.get("published", ""), reverse=True)
     json_filepath = os.path.join(html_dir, "routes.json")
     with open(json_filepath, "w", encoding="utf-8") as f:
