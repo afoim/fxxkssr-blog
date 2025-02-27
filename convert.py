@@ -1,7 +1,24 @@
 import sys
 import os
 import markdown
+from markdown.extensions.extra import ExtraExtension
 import yaml  # 需要安装 PyYAML
+import re
+
+def preprocess_strikethrough(text):
+    """预处理文本中的删除线语法，处理可能的嵌套情况"""
+    # 使用正则表达式匹配双波浪线包围的内容
+    pattern = r'~~(.*?)~~'
+    
+    def replace(match):
+        # 将匹配到的内容转换为 HTML 的 <s> 标签
+        content = match.group(1)
+        # 递归处理可能的嵌套删除线
+        if '~~' in content:
+            content = preprocess_strikethrough(content)
+        return f'<s>{content}</s>'
+    
+    return re.sub(pattern, replace, text)
 
 def convert_md_to_html(md_filepath):
     with open(md_filepath, 'r', encoding='utf-8') as f:
@@ -17,9 +34,18 @@ def convert_md_to_html(md_filepath):
                 metadata = yaml.safe_load(raw_meta) or {}
             except Exception as e:
                 print(f"Error parsing YAML metadata: {e}")
+    # 预处理删除线语法
+    md_text = preprocess_strikethrough(md_text)
     # 使用扩展支持 fenced code block，并指定输出格式为 html5
+    # 加入 extra 扩展，支持划掉语法 (~~text~~ -> <del>text</del>)
     html = markdown.markdown(md_text, 
-                               extensions=['fenced_code', 'codehilite', 'tables', 'toc'],
+                               extensions=[
+                                   'markdown.extensions.fenced_code',
+                                   'markdown.extensions.codehilite',
+                                   'markdown.extensions.tables',
+                                   'markdown.extensions.toc',
+                                   ExtraExtension()  # 使用ExtraExtension来确保正确处理删除线
+                               ],
                                output_format='html5')
     # 注入许可协议信息
     license_html = "<div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>\n"
