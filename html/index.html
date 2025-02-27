@@ -17,7 +17,7 @@
     <h1><a href="https://link.me/acofork" target="_blank">AcoFork</a> Blog - HTML限定版</h1>
         <!-- 新增：最新提交展示区域 -->
         <div id="commits">
-            <h4>最新提交</h4>
+            <h4>最新提交 <span id="commitStatus">获取中...</span></h4>
             <ul id="commitList"></ul>
         </div>
     <!-- 筛选区域 -->
@@ -133,23 +133,53 @@
             document.getElementById('footer').innerHTML = text;
         })
         .catch(error => console.error('Error loading footer:', error));
-        // 加载最新提交信息，只显示最新一条提交
-        fetch('https://api-github-com.onani.cn/repos/afoim/fxxkssr-blog/commits?sha=main')
-        .then(response => response.json())
-        .then(data => {
-            const commitList = document.getElementById('commitList');
-            if(data.length > 0) {
-                const commit = data[0];
-                const author = commit.commit.author.name;
-                const date = commit.commit.author.date;
-                const message = commit.commit.message;
-                const url = commit.html_url;
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${url}" target="_blank">${message}</a> - ${author} (${date})`;
-                commitList.appendChild(li);
-            }
-        })
-        .catch(error => console.error('Error loading commits:', error));
+// 定期获取最新提交
+function fetchLatestCommit() {
+    const commitList = document.getElementById('commitList');
+    const statusSpan = document.getElementById('commitStatus');
+    statusSpan.textContent = '获取中...';
+    commitList.innerHTML = '';  // 清空现有内容
+
+    // 添加时间戳参数来防止缓存，而不是使用Cache-Control头
+    const timestamp = new Date().getTime();
+    const url = `https://api-github-com.onani.cn/repos/afoim/fxxkssr-blog/commits?sha=main&_=${timestamp}`;
+    
+    fetch(url, {
+        method: 'GET', 
+        // 移除自定义缓存头，使用fetch的缓存控制选项
+        cache: 'no-store',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if(data.length > 0) {
+            const commit = data[0];
+            const author = commit.commit.author.name;
+            const date = commit.commit.author.date;
+            const message = commit.commit.message;
+            const url = commit.html_url;
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${url}" target="_blank">${message}</a> - ${author} (${date})`;
+            commitList.appendChild(li);
+            statusSpan.textContent = '';
+        }
+    })
+    .catch(error => {
+        console.error('Error loading commits:', error);
+        statusSpan.textContent = '获取失败: ' + error.message;
+    });
+}
+        // 首次加载
+        fetchLatestCommit();
+        // 每60秒刷新一次
+        setInterval(fetchLatestCommit, 60000);
     </script>
 </body>
 </html>
