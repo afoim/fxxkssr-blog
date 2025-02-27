@@ -155,4 +155,4 @@ bucket_name = "114514"
 ### **通过使用 HTML 的 `<img>` 标签引用即可达到开头的效果**
 
 如：`<img src="你的域名" alt="">`
-<img title="" src="https://hrandom.onani.cn" alt="loading-ag-4760">
+<img title="" src="https://hrandom-pic.onani.cn" alt="loading-ag-4760">
