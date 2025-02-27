@@ -8,7 +8,7 @@
 <meta name='category' content='开发'>
 <title>N100 - PVE（fnOS+Debian）基建记录</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,7 +22,7 @@
 <p><strong>Lang:</strong> </p>
 </div>
 <hr>
-<h1>配置&amp;需求</h1>
+<h1 id="_1">配置&amp;需求</h1>
 <ul>
 <li>
 <p>N100 CPU 频率：最小 700 Mhz, 最大 3400 Mhz | TDP：6 W</p>
@@ -46,7 +46,7 @@
 <p>U盘（作PVE引导盘）</p>
 </li>
 </ul>
-<h1>目标</h1>
+<h1 id="_2">目标</h1>
 <ol>
 <li>
 <p>所有系统通过PVE管理</p>
@@ -58,9 +58,9 @@
 <p>PVE下安装Debian，搭建QQBot、博客、AList</p>
 </li>
 </ol>
-<hr />
-<h1>1. PVE</h1>
-<h2>安装</h2>
+<hr>
+<h1 id="1-pve">1. PVE</h1>
+<h2 id="_3">安装</h2>
 <ul>
 <li>下载Ventoy最新版可执行文件：</li>
 </ul>
@@ -85,8 +85,8 @@
 <p>重启，进入PVE，通过IP+8006端口进入WebUI，登录进去</p>
 </li>
 </ul>
-<h2>配置</h2>
-<h3>安装PVE快捷管理脚本</h3>
+<h2 id="_4">配置</h2>
+<h3 id="pve">安装PVE快捷管理脚本</h3>
 <ul>
 <li>
 <p>安装PVE快捷管理脚本：<a href="https://alist.onani.cn/pve_source.tar.gz">pve_source.tar.gz | AcoFork-AList</a> 或 <a href="https://wwp.lanzoul.com/ivHta1ngmo6d"><strong>https://wwp.lanzoul.com/ivHta1ngmo6d</strong></a> （密码:i1ws）（来自：在下莫老师）</p>
@@ -101,20 +101,20 @@
 <p>同意许可协议</p>
 </li>
 <li>
-<p>依次执行白框操作<img alt="" src="https://oss.onani.cn/fuwari-blog/img/ea205e1a00e7029dfa4bd7850c5a6a68d6d4c0d9.webp" /></p>
+<p>依次执行白框操作<img alt="" src="https://oss.onani.cn/fuwari-blog/img/ea205e1a00e7029dfa4bd7850c5a6a68d6d4c0d9.webp"></p>
 </li>
 <li>
 <p>扩容local：<code>lvextend -rl +100%FREE /dev/pve/root</code></p>
 </li>
 </ul>
-<h3>配置Realtek R8168网卡</h3>
+<h3 id="realtek-r8168">配置Realtek R8168网卡</h3>
 <blockquote>
 <p>由于Debian系默认安装R8169驱动，我们需要手动安装R8168驱动，否则无法使用N100小主机自带的有线网口上网</p>
 </blockquote>
 <ul>
 <li>下载驱动：</li>
 </ul>
-<p><a href="https://www.realtek.com/Download/List?cate_id=584">https://www.realtek.com/Download/List?cate_id=584</a><img alt="" src="https://oss.onani.cn/fuwari-blog/img/0d8457c7fb0d497e12e2c8b544f07c3c37cf96cd.webp" /></p>
+<p><a href="https://www.realtek.com/Download/List?cate_id=584">https://www.realtek.com/Download/List?cate_id=584</a><img alt="" src="https://oss.onani.cn/fuwari-blog/img/0d8457c7fb0d497e12e2c8b544f07c3c37cf96cd.webp"></p>
 <ul>
 <li>
 <p>解压，安装：<code>sh autorun.sh</code></p>
@@ -187,12 +187,12 @@
 <ul>
 <li>卸除USB网卡</li>
 </ul>
-<h3>配置STUN穿透</h3>
-<h4>路由器设置DMZ主机为PVEIP</h4>
+<h3 id="stun">配置STUN穿透</h3>
+<h4 id="dmzpveip">路由器设置DMZ主机为PVEIP</h4>
 <ul>
-<li><img alt="" src="https://oss.onani.cn/fuwari-blog/img/dbeb7980e5fc699c696ffa6f2fda4a17c05ee821.webp" /> </li>
+<li><img alt="" src="https://oss.onani.cn/fuwari-blog/img/dbeb7980e5fc699c696ffa6f2fda4a17c05ee821.webp"> </li>
 </ul>
-<h4>安装Lucky</h4>
+<h4 id="lucky">安装Lucky</h4>
 <ul>
 <li>
 <p>执行：<code>curl -o /tmp/install.sh http://6.666666.host:6/files/golucky.sh &amp;&amp; sh /tmp/install.sh http://6.666666.host:6/files 2.13.4</code></p>
@@ -201,24 +201,24 @@
 <p>通过<code>host:16601</code> 进入Lucky后台，设置STUN穿透</p>
 </li>
 <li>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2175839424184aee880b91382bd1fbf3c578d258.webp" /></p>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2175839424184aee880b91382bd1fbf3c578d258.webp"></p>
 </li>
 </ul>
-<h1>2. fnOS</h1>
-<h2>安装</h2>
+<h1 id="2-fnos">2. fnOS</h1>
+<h2 id="_5">安装</h2>
 <ul>
 <li>前往官网下载最新版ISO：</li>
 </ul>
 <p><a href="https://www.fnnas.com/">https://www.fnnas.com/</a></p>
 <ul>
 <li>
-<p>上传至PVE：<img alt="" src="https://oss.onani.cn/fuwari-blog/img/073808516d357e099a866c30b4a77954c5b9b458.webp" /></p>
+<p>上传至PVE：<img alt="" src="https://oss.onani.cn/fuwari-blog/img/073808516d357e099a866c30b4a77954c5b9b458.webp"></p>
 </li>
 <li>
 <p>创建fnOS虚拟机，CPU类型选择host，步骤略</p>
 </li>
 <li>
-<p>直通核显和硬盘：<img alt="" src="https://oss.onani.cn/fuwari-blog/img/08e4f7a3b87ae86334011e1d4c3a384a36ad9866.webp" /></p>
+<p>直通核显和硬盘：<img alt="" src="https://oss.onani.cn/fuwari-blog/img/08e4f7a3b87ae86334011e1d4c3a384a36ad9866.webp"></p>
 </li>
 <li>
 <p>如果你不知道你的核显和SATA控制器的PCI ID：<code>lspci</code></p>
@@ -252,13 +252,13 @@ root@n100-pve:~# lspci
 <p>启动虚拟机，安装fnOS</p>
 </li>
 </ul>
-<h2>配置</h2>
+<h2 id="_6">配置</h2>
 <ul>
 <li>
-<p>前往飞牛设置，创建储存空间，Linear模式，选择刚才直通的硬盘<img alt="" src="https://oss.onani.cn/fuwari-blog/img/581cf01462df545a8662acbb5e20e1676bd17744.webp" /></p>
+<p>前往飞牛设置，创建储存空间，Linear模式，选择刚才直通的硬盘<img alt="" src="https://oss.onani.cn/fuwari-blog/img/581cf01462df545a8662acbb5e20e1676bd17744.webp"></p>
 </li>
 <li>
-<p>前往飞牛应用中心安装qBittorrent、影视，并且在设置给予目录读取权限<img alt="" src="https://oss.onani.cn/fuwari-blog/img/92a2e0bf25d630db4858775fdbb6c907f419c25d.webp" /></p>
+<p>前往飞牛应用中心安装qBittorrent、影视，并且在设置给予目录读取权限<img alt="" src="https://oss.onani.cn/fuwari-blog/img/92a2e0bf25d630db4858775fdbb6c907f419c25d.webp"></p>
 </li>
 <li>
 <p>配置qBittorrent的用户名和密码</p>
@@ -286,17 +286,17 @@ root@n100-pve:~# lspci
   ghcr.onani.cn/estrellaxd/auto_bangumi:latest</code></p>
 <ul>
 <li>
-<p>进入<code>host:7892</code> 让AutoBangumi连接qBittorrent并配置下载地址<img alt="" src="https://oss.onani.cn/fuwari-blog/img/82c4a003d2399f82a7ccf5849cd1d5858d5f1f61.webp" /></p>
+<p>进入<code>host:7892</code> 让AutoBangumi连接qBittorrent并配置下载地址<img alt="" src="https://oss.onani.cn/fuwari-blog/img/82c4a003d2399f82a7ccf5849cd1d5858d5f1f61.webp"></p>
 </li>
 <li>
 <p>添加RSS。可前往<a href="https://mikanime.tv/">蜜柑计划 - Mikan Project</a>获得各个字幕组的RSS</p>
 </li>
 </ul>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/f36daae968d8043bbcd1e4a2bbb9b9cd2d707cee.webp" /></p>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/f36daae968d8043bbcd1e4a2bbb9b9cd2d707cee.webp"></p>
 <p>注意：使用<a href="https://mikanime.tv/">蜜柑计划 - Mikan Project</a>时，请订阅单个字幕组的RSS，不要使用个人的RSS，会导致<strong>只能获取到你所有追番的最新一集而不是单个番的全部剧集</strong></p>
 <ul>
 <li>
-<p>打开飞牛影视，初始化并设置媒体库<img alt="" src="https://oss.onani.cn/fuwari-blog/img/269b78c3b7dffe7f8cdb861098f44147552b5eb4.webp" /></p>
+<p>打开飞牛影视，初始化并设置媒体库<img alt="" src="https://oss.onani.cn/fuwari-blog/img/269b78c3b7dffe7f8cdb861098f44147552b5eb4.webp"></p>
 </li>
 <li>
 <p>注意：如果要刮削旧集旧番，请规范重命名，可以使用自动化工具：<a href="https://alist.onani.cn/Episode-ReName.zip">Episode-ReName.zip | AcoFork-AList</a></p>
@@ -316,8 +316,8 @@ root@n100-pve:~# lspci
 </ul>
 </li>
 </ul>
-<h1>3. Debian</h1>
-<h2>安装</h2>
+<h1 id="3-debian">3. Debian</h1>
+<h2 id="_7">安装</h2>
 <ul>
 <li>下载Debian12 ISO（USTC镜像源）（建议选择DVD镜像，包更全，安装更快）</li>
 </ul>
@@ -325,13 +325,13 @@ root@n100-pve:~# lspci
 <ul>
 <li>上传至PVE，创建Debian虚拟机，CPU类型选择host，步骤略</li>
 </ul>
-<h3>安装1Panel：</h3>
+<h3 id="1panel">安装1Panel：</h3>
 <p><a href="https://1panel.cn/docs/installation/online_installation/">https://1panel.cn/docs/installation/online_installation/</a></p>
 <ul>
 <li>在1Panel中安装<code>Openresty</code> <code>MySQL</code> <code>Halo</code> <code>AList</code> <code>Cloudflared</code> 配置步骤略</li>
 </ul>
-<h3>搭建QQBot</h3>
-<h4>安装OneBotv11协议实现：Lagrange.OneBot</h4>
+<h3 id="qqbot">搭建QQBot</h3>
+<h4 id="onebotv11lagrangeonebot">安装OneBotv11协议实现：Lagrange.OneBot</h4>
 <ul>
 <li>
 <p>Docker Run：<code>docker run -td -p 8081:8081 -v /root/qqbot/lo:/app/data -e UID=$UID -e GID=$(id -g) ghcr.onani.cn/lagrangedev/lagrange.onebot:edge</code></p>
@@ -381,7 +381,7 @@ root@n100-pve:~# lspci
 <ul>
 <li>重启容器，扫码登录</li>
 </ul>
-<h4>安装NoneBot2</h4>
+<h4 id="nonebot2">安装NoneBot2</h4>
 <ul>
 <li>
 <p>安装pip：<code>apt install python3-pip</code></p>
@@ -443,11 +443,12 @@ root@n100-pve:~# lspci
   项目配置完毕，开始使用吧！</code></p>
 </li>
 </ul>
-<h1>成果展示（域名已弃用）</h1>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/4b4680cc548e0c59ec18cef537c9b1f5412fbbcd.webp" /></p>
+<h1 id="_8">成果展示（域名已弃用）</h1>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/4b4680cc548e0c59ec18cef537c9b1f5412fbbcd.webp"></p>
 <p><a href="https://blog.onani.cn">https://blog.onani.cn</a></p>
 <p><a href="https://alist.onani.cn">https://alist.onani.cn</a></p>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/7c24ff7d54b2e0ccaecce4b2ef79155c54124fa4.webp" /></p><footer>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/7c24ff7d54b2e0ccaecce4b2ef79155c54124fa4.webp"></p><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>

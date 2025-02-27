@@ -8,7 +8,7 @@
 <meta name='category' content='开发'>
 <title>干翻GFW的SNI阻断，还我们一个不受限制的互联网！</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,11 +22,11 @@
 <p><strong>Lang:</strong> </p>
 </div>
 <hr>
-<h1>Accesser是什么？</h1>
+<h1 id="accesser">Accesser是什么？</h1>
 <p>::github{repo="URenko/Accesser"}</p>
 <p>Accesser是一个HTTP代理。它通过中间人的身份处理终端的HTTP出口流量，以绕过SNI阻断。我们正常访问网站时，客户端会发送Client Hello，而这个报文是明文，并且通常会携带ServerName，这个时候GFW就能通过检测ServerName来进行阻断，代替网站向客户端发送一个RST报文重置连接，做到网站被“墙”的效果</p>
 <p>而通过Accesser代理后，它会抹掉ServerName然后发送Client Hello。这个时候，如果服务端支持域前置，则会返回客户端一个默认的SSL证书（公钥），然后客户端就能使用这个公钥再次发送一个加密的Client Hello，此时携带上ServerName就不会被GFW阻断了。但是，如果客户端在第一次我们拿公钥的时候拒绝了空ServerName的Client Hello，那这个办法就失效了，不过大部分网站是支持这样做的</p>
-<h3>Windows</h3>
+<h3 id="windows">Windows</h3>
 <ul>
 <li>
 <p>前往开头的的Github仓库</p>
@@ -35,13 +35,13 @@
 <p>下载最新的Release。一般有一个<code>accesser.exe</code></p>
 </li>
 <li>
-<p>直接打开这个软件，看到这个画面即可<img alt="" src="https://oss.onani.cn/fuwari-blog/img/c2eed28c-6e5d-43a3-a016-8f1a38a53cbd.webp" /></p>
+<p>直接打开这个软件，看到这个画面即可<img alt="" src="https://oss.onani.cn/fuwari-blog/img/c2eed28c-6e5d-43a3-a016-8f1a38a53cbd.webp"></p>
 </li>
 <li>
-<p>它的原理是自动设置系统代理，如果你使用了一些别的代理软件，会被覆盖<img alt="" src="https://oss.onani.cn/fuwari-blog/img/d0d8fac1-a2e5-4db2-8e25-ca5e04eb9951.webp" /></p>
+<p>它的原理是自动设置系统代理，如果你使用了一些别的代理软件，会被覆盖<img alt="" src="https://oss.onani.cn/fuwari-blog/img/d0d8fac1-a2e5-4db2-8e25-ca5e04eb9951.webp"></p>
 </li>
 </ul>
-<h3>Linux（以Debian12为例）</h3>
+<h3 id="linuxdebian12">Linux（以Debian12为例）</h3>
 <ul>
 <li>
 <p>安装Python：<code>apt install python3</code></p>
@@ -87,7 +87,8 @@
 <li>
 <p>测试连通性：<code>curl -x https://discord.com</code></p>
 </li>
-</ul><footer>
+</ul><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>

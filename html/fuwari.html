@@ -8,7 +8,7 @@
 <meta name='category' content='运维'>
 <title>Fuwari静态博客+Cloudflare Pages，只需一个域名，带你搭建博主同款博客！</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,7 +22,7 @@
 <p><strong>Lang:</strong> </p>
 </div>
 <hr>
-<h3>你需要准备的东西</h3>
+<h3 id="_1">你需要准备的东西</h3>
 <ol>
 <li>
 <p>一个牛逼的脑子，支持并行运算至少两个单位以上的事件。遇到问题先思考，想不通就搜索，搜索不到就去和AI调情，不要上来就问问问</p>
@@ -46,10 +46,10 @@
 <p>你得会用MarkDown语法来编写文章，如果你不会可以参见：<a href="https://markdown.com.cn/basic-syntax/">Markdown 基本语法 | Markdown 官方教程</a></p>
 </li>
 </ol>
-<h3>流程图</h3>
+<h3 id="_2">流程图</h3>
 <p>本地部署Fuwari，编写文章 -&gt; 推送更改到远程Github仓库 -&gt; Cloudflare Pages检测到仓库更新自动构建新的网站静态文件 -&gt; 网站成功更改</p>
-<h3>让我们开搞吧！</h3>
-<h4>首先，我们来本地部署Fuwari</h4>
+<h3 id="_3">让我们开搞吧！</h3>
+<h4 id="fuwari">首先，我们来本地部署Fuwari</h4>
 <ol>
 <li>Fork仓库：</li>
 </ol>
@@ -59,7 +59,7 @@
 <p>避免有小废物不会Fork仓库，这里附上图片教程</p>
 </li>
 <li>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-12-15-44-image.webp" /><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-12-17-03-image.webp" /></p>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-12-15-44-image.webp"><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-12-17-03-image.webp"></p>
 </li>
 <li>
 <p>然后将仓库克隆到本地：<code>git clone &lt;你的仓库URL&gt;</code>（推荐使用SSH，可以不用魔法来推送更改）</p>
@@ -78,7 +78,7 @@
 <p>[!TIP]</p>
 <p>你也可以使用创建一个新的空仓库然后手动上传文件，并且可以将仓库可见性设为：Private</p>
 </blockquote>
-<h4>改写Fuwari的基本信息并且清理多余文件</h4>
+<h4 id="fuwari_1">改写Fuwari的基本信息并且清理多余文件</h4>
 <blockquote>
 <p>刚创建的Fuwari可能带有一些示例的博主名，ICON，URL，介绍和示例文章，为了让用户知道这是你的博客，我们需要一一改写</p>
 </blockquote>
@@ -96,7 +96,7 @@
 <p>lang：博客显示语言。注释已经列出了一些常用的值，如：en, zh_CN, zh_TW, ja, ko</p>
 </li>
 <li>
-<p>themeColor：hue值则是你的博客主题色，可以在你的博客右上角的画板图标确定喜欢的颜色再填写<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-15-09-16-30-image.webp" /></p>
+<p>themeColor：hue值则是你的博客主题色，可以在你的博客右上角的画板图标确定喜欢的颜色再填写<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-15-09-16-30-image.webp"></p>
 </li>
 <li>
 <p>banner：src：即banner图片，支持http/https URL</p>
@@ -117,10 +117,10 @@
 <p>bio：即个性签名，会显示在头像和名字下面</p>
 </li>
 <li>
-<p><code>NavBarConfig</code> 为导航栏设置的超链接。<code>ProfileConfig</code> 为你的用户的超链接，分别如图<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-15-17-49-30-image.webp" /></p>
+<p><code>NavBarConfig</code> 为导航栏设置的超链接。<code>ProfileConfig</code> 为你的用户的超链接，分别如图<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-15-17-49-30-image.webp"></p>
 </li>
 <li>
-<p>icon：你需要前往<a href="https://fontawesome.com/search">Font Awesome</a>去搜索你想要的图标，比如QQ，则填写 <code>fa6-brands:qq</code> ，如图。Fuwari支持这几种类型：<code>fa6-brands</code>, <code>fa6-regular</code>, <code>fa6-solid</code>, <code>material-symbols</code><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-15-17-47-10-image.webp" /></p>
+<p>icon：你需要前往<a href="https://fontawesome.com/search">Font Awesome</a>去搜索你想要的图标，比如QQ，则填写 <code>fa6-brands:qq</code> ，如图。Fuwari支持这几种类型：<code>fa6-brands</code>, <code>fa6-regular</code>, <code>fa6-solid</code>, <code>material-symbols</code><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-15-17-47-10-image.webp"></p>
 </li>
 <li>
 <p>这里我附上我的 <code>config.ts</code> </p>
@@ -225,7 +225,7 @@
 <p>至此，你已经可以开始撰写文章了</p>
 </li>
 </ol>
-<h4>让我们开始写作！</h4>
+<h4 id="_4">让我们开始写作！</h4>
 <ol>
 <li>
 <p>首先，在项目根目录执行：<code>pnpm new-post &lt;这里填写你的文章标题&gt;</code></p>
@@ -278,7 +278,7 @@
 <p>依次点击：MarkText软件的左上角的三条杠 -&gt; File -&gt; Perferences -&gt; 左侧的Image分类 -&gt; 如图设置 -&gt; 注意更改第一个选项为Copy开头的选项，将Perfer开关打开，然后上下两个文本框一个填写绝对路径一个填写相对路径</p>
 </li>
 <li>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-12-54-21-image.webp" /></p>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-12-54-21-image.webp"></p>
 </li>
 <li>
 <p>这样，当置入图片时，会往 <code>assets/images</code> 文件夹复制一份，然后通过<code>![1](assets/images/1.webp)</code>写入MarkDown文件。这样网站就能成功读取到图片啦。而你只需要Ctrl+CV，其他操作MarkText都会自动处理</p>
@@ -287,10 +287,10 @@
 <p>至此，你已经会用MarkText编写MarkDown语法的博文了</p>
 </li>
 </ol>
-<h4>本地预览，然后发布到Github</h4>
+<h4 id="github">本地预览，然后发布到Github</h4>
 <ol>
 <li>
-<p>当你认为你的文章已经写得差不多时，想要看看效果？请到项目根目录执行：<code>pnpm dev</code>，稍等片刻，你就可以本地预览你的博客啦<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-03-44-image.webp" /></p>
+<p>当你认为你的文章已经写得差不多时，想要看看效果？请到项目根目录执行：<code>pnpm dev</code>，稍等片刻，你就可以本地预览你的博客啦<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-03-44-image.webp"></p>
 </li>
 <li>
 <p>好！接下来我们需要使用Git将我们所做的更改发布到Github</p>
@@ -311,24 +311,25 @@
 <p>最后，让我们将本地更改提交到远程仓库：<code>git push</code></p>
 </li>
 <li>
-<p>此时，你的Github仓库应该已经有了新的提交<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-10-12-image.webp" /></p>
+<p>此时，你的Github仓库应该已经有了新的提交<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-10-12-image.webp"></p>
 </li>
 </ol>
-<h4>让Cloudflare连接上Github，使用Pages服务展示你的博客（FREE！）</h4>
+<h4 id="cloudflaregithubpagesfree">让Cloudflare连接上Github，使用Pages服务展示你的博客（FREE！）</h4>
 <ol>
 <li>
-<p>前往Cloudflare的 Workers 和 Pages 页面，创建一个新Pages<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-14-28-image.webp" /></p>
+<p>前往Cloudflare的 Workers 和 Pages 页面，创建一个新Pages<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-14-28-image.webp"></p>
 </li>
 <li>
-<p>然后选择连接Git存储库，连接你的Github，随后设置构建命令：<code>pnpm build</code>  ，然后设置构建输出目录：<code>dist</code> ，如图<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-16-15-image.webp" /></p>
+<p>然后选择连接Git存储库，连接你的Github，随后设置构建命令：<code>pnpm build</code>  ，然后设置构建输出目录：<code>dist</code> ，如图<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-16-15-image.webp"></p>
 </li>
 <li>
-<p>绑定自定义域，访问自定义域即可访问你的博客！<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-17-00-image.webp" /></p>
+<p>绑定自定义域，访问自定义域即可访问你的博客！<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-14-13-17-00-image.webp"></p>
 </li>
 <li>
 <p>随后，你只需要在本地编写文章，然后<a href="#本地预览然后发布到github">使用Git将更改推送到远程仓库</a>，Cloudflare就会自动部署，更新你的博客！</p>
 </li>
-</ol><footer>
+</ol><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>

@@ -8,7 +8,7 @@
 <meta name='category' content='开发'>
 <title>使用NoneBot2搭建你的QQBot！</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,7 +22,7 @@
 <p><strong>Lang:</strong> zh_CN</p>
 </div>
 <hr>
-<h1>安装 NapCat(Win)</h1>
+<h1 id="napcatwin">安装 NapCat(Win)</h1>
 <blockquote>
 <p>用于登录 QQ 实现收发消息</p>
 </blockquote>
@@ -40,10 +40,10 @@
 <p>它会打印本地控制台的地址信息，如：<code>[NapCat] [WebUi] WebUi Local Panel Url: http://127.0.0.1:6099/webui?token=4xldg5fqb1</code></p>
 </li>
 <li>
-<p>直接进入，如图配置即可（端口号可以自己修改，但是要和下部分NoneBot2监听的端口一致。这里是9090）<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-11-20-19-21-21-2024-11-20-19-15-39-image.webp" /></p>
+<p>直接进入，如图配置即可（端口号可以自己修改，但是要和下部分NoneBot2监听的端口一致。这里是9090）<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-11-20-19-21-21-2024-11-20-19-15-39-image.webp"></p>
 </li>
 </ol>
-<h1>安装 NoneBot2</h1>
+<h1 id="nonebot2">安装 NoneBot2</h1>
 <p>用于实现逻辑，控制 NapCat 收发消息</p>
 <ol>
 <li>
@@ -72,7 +72,7 @@
 </li>
 </ol>
 <p>示例：</p>
-<p><code>C:\afbot&gt;nb bs
+<pre class="codehilite"><code>C:\afbot&gt;nb bs
 加载适配器列表中……
 请输入项目名称
 [?] 请输入 &gt; onanibot
@@ -82,7 +82,7 @@
 请输入 Bot 昵称，消息以 Bot 昵称开头可以代替艾特（留空回车结束输入）
 [?] 第 1 项 &gt;
 请输入 Bot 命令起始字符，消息以起始符开头将被识别为命令，
-如果有一个指令为 查询，当该配置项中有 "/" 时使用 "/查询" 才能够触发，
+如果有一个指令为 查询，当该配置项中有 &quot;/&quot; 时使用 &quot;/查询&quot; 才能够触发，
 留空将使用默认值 ['', '/', '#']（留空回车结束输入）
 [?] 第 1 项 &gt;
 请输入 Bot 命令分隔符，一般用于二级指令，
@@ -106,7 +106,9 @@
 正在安装项目依赖
 依赖安装成功
 [?] 请选择需要启用的内置插件
-项目配置完毕，开始使用吧！</code></p>
+项目配置完毕，开始使用吧！
+</code></pre>
+
 <ol>
 <li>
 <p>项目创建完毕后启动：<code>nb run</code></p>
@@ -120,7 +122,8 @@
 <li>
 <p>如果你要调试 NoneBot2，请先使用<code>nb</code> 进入虚拟环境。然后使用<code>pip install &lt;包名&gt;</code></p>
 </li>
-</ol><footer>
+</ol><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>

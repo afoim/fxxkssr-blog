@@ -8,7 +8,7 @@
 <meta name='category' content='运维'>
 <title>试试Cloudflare IP优选！让Cloudflare在国内再也不是减速器！</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,35 +22,35 @@
 <p><strong>Lang:</strong> </p>
 </div>
 <hr>
-<h4>未优选</h4>
-<p><img alt="QmZoinxZgAzu7Skh7BqsxmDQGU1sXtLLskJcyQuRAQNKww.webp" src="https://oss.onani.cn/fuwari-blog/img/098f9ee71ae62603022e542878673e19bdcaf196.webp" /></p>
-<h4>已优选</h4>
-<p><img alt="QmaNVwAwSRvqdL5SrvWVCGCQqmacP3d62yoLxofGscNoKq.webp" src="https://oss.onani.cn/fuwari-blog/img/e98ce10d846475aaec5cf73546d9b5caffefc4c0.webp" /></p>
-<hr />
+<h4 id="_1">未优选</h4>
+<p><img alt="QmZoinxZgAzu7Skh7BqsxmDQGU1sXtLLskJcyQuRAQNKww.webp" src="https://oss.onani.cn/fuwari-blog/img/098f9ee71ae62603022e542878673e19bdcaf196.webp"></p>
+<h4 id="_2">已优选</h4>
+<p><img alt="QmaNVwAwSRvqdL5SrvWVCGCQqmacP3d62yoLxofGscNoKq.webp" src="https://oss.onani.cn/fuwari-blog/img/e98ce10d846475aaec5cf73546d9b5caffefc4c0.webp"></p>
+<hr>
 <p>结论：可见，优选过的网站响应速度有很大提升，并且出口IP也变多了。这能让你的网站可用性大大提高，并且加载速度显著变快。
 <strong>优选节点使用：<a href="https://cloudflare.182682.xyz">cloudflare.182682.xyz</a></strong></p>
-<h1>针对于A、AAAA、CNAME</h1>
+<h1 id="aaaaacname">针对于A、AAAA、CNAME</h1>
 <blockquote>
 <p>我们需要<strong>两个域名</strong>（比如：onani.cn和acofork.cn）</p>
 </blockquote>
 <p>这里我们让onani.cn成为主力域名，让acofork.cn成为辅助域名</p>
-<hr />
+<hr>
 <ol>
 <li>
 <p>首先新建一个DNS解析，指向你的<strong>源站</strong>，<strong>开启cf代理</strong>
-   <img alt="QmfBKgDe77SpkUpjGdmsxqwU2UabvrDAw4c3bgFiWkZCna.webp" src="https://oss.onani.cn/fuwari-blog/img/c94c34ee262fb51fb5697226ae0df2d804bf76fe.webp" /></p>
+   <img alt="QmfBKgDe77SpkUpjGdmsxqwU2UabvrDAw4c3bgFiWkZCna.webp" src="https://oss.onani.cn/fuwari-blog/img/c94c34ee262fb51fb5697226ae0df2d804bf76fe.webp"></p>
 </li>
 <li>
 <p>前往 SSL/TLS -&gt; 自定义主机名。设置回退源为你刚才的DNS解析的域名（xlog.acofork.cn），添加自定义主机名为你最终想让用户访问的域名（onani.cn）并且按照指示在主力域名（onani.cn）添加TXT所有权验证和TXT证书验证，直到证书状态和主机名状态都变为有效
-   <img alt="QmRYrwjeDMDQCj8G9RYkpjC3X4vpwE77wpNpbqKURwBber.webp" src="https://oss.onani.cn/fuwari-blog/img/f6170f009c43f7c6bee4c2d29e2db7498fa1d0dc.webp" /></p>
+   <img alt="QmRYrwjeDMDQCj8G9RYkpjC3X4vpwE77wpNpbqKURwBber.webp" src="https://oss.onani.cn/fuwari-blog/img/f6170f009c43f7c6bee4c2d29e2db7498fa1d0dc.webp"></p>
 </li>
 <li>
 <p>继续在你的辅助域名添加一条解析。CNAME到优选节点：cloudflare.182682.xyz，<strong>不开启cf代理</strong>
-   <img alt="QmNwkMqDEkCGMu5jsgE6fj6qpupiqMrqqQtWeAmAJNJbC4.webp" src="https://oss.onani.cn/fuwari-blog/img/4f9f727b0490e0b33d360a2363c1026003060b29.webp" /></p>
+   <img alt="QmNwkMqDEkCGMu5jsgE6fj6qpupiqMrqqQtWeAmAJNJbC4.webp" src="https://oss.onani.cn/fuwari-blog/img/4f9f727b0490e0b33d360a2363c1026003060b29.webp"></p>
 </li>
 <li>
 <p>最后在你的主力域名添加解析。域名为之前在辅助域名的自定义主机名（onani.cn），目标为刚才的cdn.acofork.cn，<strong>不开启cf代理</strong>
-   <img alt="QmeK3AZghae4J4LcJdbPMxBcmoNEeF3hXNBmtJaDki8HYt.webp" src="https://oss.onani.cn/fuwari-blog/img/6f51cb2a42140a9bf364f88a5715291be616a254.webp" /></p>
+   <img alt="QmeK3AZghae4J4LcJdbPMxBcmoNEeF3hXNBmtJaDki8HYt.webp" src="https://oss.onani.cn/fuwari-blog/img/6f51cb2a42140a9bf364f88a5715291be616a254.webp"></p>
 </li>
 <li>
 <p>优选完毕，尝试访问</p>
@@ -62,16 +62,16 @@
 <blockquote>
 <p>优选工作流：用户访问 -&gt; 由于最终访问的域名设置了CNAME解析，所以实际上访问了cdn.acofork.cn，并且携带 <strong>源主机名：onani.cn</strong> -&gt; 到达cloudflare.182682.xyz进行优选 -&gt; 优选结束，cf边缘节点识别到了携带的 <strong>源主机名：onani.cn</strong> 查询发现了回退源 -&gt; 回退到回退源内容（xlog.acofork.cn） -&gt; 访问成功</p>
 </blockquote>
-<h1>针对于Cloudflare Page</h1>
+<h1 id="cloudflare-page">针对于Cloudflare Page</h1>
 <ol>
 <li>你可以直接将你绑定到Page的子域名直接更改NS服务器到阿里云\华为云\腾讯云云解析做线路分流解析</li>
 </ol>
-<h1>针对于Cloudflare Workers</h1>
+<h1 id="cloudflare-workers">针对于Cloudflare Workers</h1>
 <ol>
 <li>在Workers中添加路由，然后直接将你的路由域名从指向<code>xxx.worker.dev</code>改为<code>cloudflare.182682.xyz</code>等优选域名即可</li>
 </ol>
-<hr />
-<h3>疑难解答</h3>
+<hr>
+<h3 id="_3">疑难解答</h3>
 <ol>
 <li>Q：如果我的源站使用Cloudflare Tunnels
    A：需要在Tunnels添加两个规则，一个指向你的辅助域名，一个指向最终访问的域名。然后删除最终访问域名的DNS解析（<strong>但是不要直接在Tunnels删，会掉白名单，导致用户访问404</strong>）。然后跳过第一步</li>
@@ -81,7 +81,7 @@
 分类讨论，假如你设置的规则仅指向辅助域名，那么在优选的工作流中：用户访问 -&gt; 由于最终访问的域名设置了CNAME解析，所以实际上访问了cdn.acofork.cn，并且携带 <strong>源主机名：onani.cn</strong> -&gt; 到达cloudflare.182682.xyz进行优选 -&gt; 优选结束，cf边缘节点识别到了携带的 <strong>源主机名：onani.cn</strong> 查询发现了回退源 -&gt; 回退源检测 <strong>源主机名：onani.cn</strong>不在白名单 -&gt; 报错 404 Not Found。访问失败
 分类讨论，假如你设置的规则仅指向最终访问的域名，那么在优选的工作流中：用户访问 -&gt; 由于最终访问的域名设置了CNAME解析，所以实际上访问了cdn.acofork.cn -&gt; 由于cdn.acofork.cn不在Tunnels白名单，则访问失败</p>
 </blockquote>
-<hr />
+<hr>
 <ol>
 <li>Q：如果我的源站使用了Cloudflare Origin Rule（端口回源）
    A：需要将规则的生效主机名改为最终访问的域名，否则不触发回源策略（会导致辅助域名无法访问，建议使用Cloudflare Tunnels）</li>
@@ -97,7 +97,8 @@
 <blockquote>
 <p>原理：假设你已经配置完毕，但是serv00仅配置其中一个域名
 那么在优选的工作流中：会导致访问错误，serv00将会拦截不在白名单的域名请求</p>
-</blockquote><footer>
+</blockquote><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>

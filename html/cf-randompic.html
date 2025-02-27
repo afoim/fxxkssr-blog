@@ -8,7 +8,7 @@
 <meta name='category' content='开发'>
 <title>Cloudflare R2+Workers！马上搭建自己的云上图床！</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,47 +22,47 @@
 <p><strong>Lang:</strong> </p>
 </div>
 <hr>
-<h3><strong>结果图</strong></h3>
-<p><img alt="QmVgqgoC7G8NLS21WvR8j9gf5amu33XvuV68ZrgM5B9iFf.webp" src="https://oss.onani.cn/fuwari-blog/img/408795f3ec1a5a9baf91b6cd7564d6f1d7dbc5bd.webp" /></p>
-<h3><strong>原理</strong></h3>
+<h3 id="_1"><strong>结果图</strong></h3>
+<p><img alt="QmVgqgoC7G8NLS21WvR8j9gf5amu33XvuV68ZrgM5B9iFf.webp" src="https://oss.onani.cn/fuwari-blog/img/408795f3ec1a5a9baf91b6cd7564d6f1d7dbc5bd.webp"></p>
+<h3 id="_2"><strong>原理</strong></h3>
 <p>图源由 Cloudflare R2 托管，通过两个 Workers 连接 R2 以展示随机横屏/竖屏图片，静态页面引用 Workers 的 URL 以实现以上界面</p>
-<h3><strong>创建 Cloudflare R2 存储桶</strong></h3>
+<h3 id="cloudflare-r2"><strong>创建 Cloudflare R2 存储桶</strong></h3>
 <p>R2 实际上是一个对象存储。Cloudflare 提供 10G 的免费存储和每月 1000 万次的免费访问</p>
 <ol>
 <li>进入<a href="https://dash.cloudflare.com/">Cloudflare 仪表盘</a>，进入 R2 页面，如图</li>
 </ol>
-<p><img alt="QmU7u2JHUcevyHnwsCdAZfs7X7Fcdh3KJhn6eoy24Q5dGC.webp" src="https://oss.onani.cn/fuwari-blog/img/0ffb86d36ab0f3fcc24ef7b3d64c4bc72b6b53e7.webp" /></p>
+<p><img alt="QmU7u2JHUcevyHnwsCdAZfs7X7Fcdh3KJhn6eoy24Q5dGC.webp" src="https://oss.onani.cn/fuwari-blog/img/0ffb86d36ab0f3fcc24ef7b3d64c4bc72b6b53e7.webp"></p>
 <ol>
 <li>
-<p>选择创建存储桶<img alt="QmX3eCaCVEgE8AN29D9t2VpQ5t5SrZGKb8EcZv9oKpCqf2.webp" src="https://oss.onani.cn/fuwari-blog/img/26d3b3e26b9e2f641a2eea98c2ddb8891a0b7f6a.webp" /></p>
+<p>选择创建存储桶<img alt="QmX3eCaCVEgE8AN29D9t2VpQ5t5SrZGKb8EcZv9oKpCqf2.webp" src="https://oss.onani.cn/fuwari-blog/img/26d3b3e26b9e2f641a2eea98c2ddb8891a0b7f6a.webp"></p>
 </li>
 <li>
-<p>为你的存储桶起一个名字，然后单击创建<img alt="QmVad5eoJCLpSNZ4HCvTPJfD8rpg4aePMzZ7j2DZATn1XD.webp" src="https://oss.onani.cn/fuwari-blog/img/7fa96a023d7969ab168d467ab6d05646e5241884.webp" /></p>
+<p>为你的存储桶起一个名字，然后单击创建<img alt="QmVad5eoJCLpSNZ4HCvTPJfD8rpg4aePMzZ7j2DZATn1XD.webp" src="https://oss.onani.cn/fuwari-blog/img/7fa96a023d7969ab168d467ab6d05646e5241884.webp"></p>
 </li>
 <li>
-<p>进入如下页面就已经创建完毕了<img alt="QmSdzwBJpw2L4a8LJ3eM3VMJs3d5oV5iFCxCMtv69VZmYH.webp" src="https://oss.onani.cn/fuwari-blog/img/719f2dfe59c73fa820ffc6cc2d9749ca14b9bece.webp" /></p>
+<p>进入如下页面就已经创建完毕了<img alt="QmSdzwBJpw2L4a8LJ3eM3VMJs3d5oV5iFCxCMtv69VZmYH.webp" src="https://oss.onani.cn/fuwari-blog/img/719f2dfe59c73fa820ffc6cc2d9749ca14b9bece.webp"></p>
 </li>
 <li>
-<p>返回 R2 首页。因为在下文我们需要使用 API 来进行文件传输，所以需要创建你的 R2 API 令牌，单击管理 R2 API 令牌<img alt="QmbS8zjJTESwsmycKBSC9kmabAA9dtSCUX8nbUDWg4BWRX.webp" src="https://oss.onani.cn/fuwari-blog/img/9b1a338acae642ce7ce71dd41454903b1cfeafd0.webp" /></p>
+<p>返回 R2 首页。因为在下文我们需要使用 API 来进行文件传输，所以需要创建你的 R2 API 令牌，单击管理 R2 API 令牌<img alt="QmbS8zjJTESwsmycKBSC9kmabAA9dtSCUX8nbUDWg4BWRX.webp" src="https://oss.onani.cn/fuwari-blog/img/9b1a338acae642ce7ce71dd41454903b1cfeafd0.webp"></p>
 </li>
 <li>
-<p>单击创建 API 令牌，如图<img alt="QmPzJEHVAm4z3S1SHY4k99TugrPyTB9DXpyRR8Loj22bz3.webp" src="https://oss.onani.cn/fuwari-blog/img/9512f23e08a60948e721848118f5eb096449909b.webp" /></p>
+<p>单击创建 API 令牌，如图<img alt="QmPzJEHVAm4z3S1SHY4k99TugrPyTB9DXpyRR8Loj22bz3.webp" src="https://oss.onani.cn/fuwari-blog/img/9512f23e08a60948e721848118f5eb096449909b.webp"></p>
 </li>
 <li>
-<p>因为我们需要该 API 来管理单个 R2 存储桶，所以选择<strong>对象读和写</strong>，详细配置如图<img alt="QmNY9p8hksi18B9R8TVfdGgu336oQ3cPmghyfYXE9CDGD4.webp" src="https://oss.onani.cn/fuwari-blog/img/0361e2b00351559eaebb18f3e6bb15a94b8578e9.webp" /></p>
+<p>因为我们需要该 API 来管理单个 R2 存储桶，所以选择<strong>对象读和写</strong>，详细配置如图<img alt="QmNY9p8hksi18B9R8TVfdGgu336oQ3cPmghyfYXE9CDGD4.webp" src="https://oss.onani.cn/fuwari-blog/img/0361e2b00351559eaebb18f3e6bb15a94b8578e9.webp"></p>
 </li>
 <li>
-<p>创建 API 令牌后，新页面会展示令牌的详细信息，<strong>仅会展示一次！！！</strong> 保持这个页面，直到你将该页面的所有信息都已经妥善保存，不要关闭界面，否则，你需要轮转 API 令牌以禁用之前的旧密钥，如图<img alt="QmZTUwbycqbJhVP6PatD3psYy7ej9PDDoiXbmDWoakPhwx.webp" src="https://oss.onani.cn/fuwari-blog/img/f4214f6fdf67fa7bf694d0a1501ecc21aef45a90.webp" /></p>
+<p>创建 API 令牌后，新页面会展示令牌的详细信息，<strong>仅会展示一次！！！</strong> 保持这个页面，直到你将该页面的所有信息都已经妥善保存，不要关闭界面，否则，你需要轮转 API 令牌以禁用之前的旧密钥，如图<img alt="QmZTUwbycqbJhVP6PatD3psYy7ej9PDDoiXbmDWoakPhwx.webp" src="https://oss.onani.cn/fuwari-blog/img/f4214f6fdf67fa7bf694d0a1501ecc21aef45a90.webp"></p>
 </li>
 <li>
 <p>确保你已经妥善保存你的 R2 API 令牌，然后进行下一步</p>
 </li>
 </ol>
-<h3><strong>为你的存储桶添加文件</strong></h3>
+<h3 id="_3"><strong>为你的存储桶添加文件</strong></h3>
 <p>因为 Web 界面传输文件较慢且不支持传输大于 300MB 的文件。这里使用本地部署 AList 然后连接你的 R2 存储桶实现高速上传</p>
 <ol>
 <li>
-<p>笔者使用 Windows。前往<a href="https://github.com/alist-org/alist/releases">AList - Github Release</a>下载适用于 Windows 的最新可执行文件，如图<img alt="QmPDRDJGeGStreyZMXVYofbE9FCs1T1MyDek3KUbB3Kk5b.webp" src="https://oss.onani.cn/fuwari-blog/img/a2d1f289e464a9fb6367e2b7ff0b695916742698.webp" /></p>
+<p>笔者使用 Windows。前往<a href="https://github.com/alist-org/alist/releases">AList - Github Release</a>下载适用于 Windows 的最新可执行文件，如图<img alt="QmPDRDJGeGStreyZMXVYofbE9FCs1T1MyDek3KUbB3Kk5b.webp" src="https://oss.onani.cn/fuwari-blog/img/a2d1f289e464a9fb6367e2b7ff0b695916742698.webp"></p>
 </li>
 <li>
 <p>将下载的压缩包解压，并将其中的<code>alist.exe</code>放入一个空文件夹</p>
@@ -71,132 +71,135 @@
 <p>单击搜索框，输入 cmd 并回车，如图</p>
 </li>
 <li>
-<p><img alt="QmSt8aFtaeEprJHASEiNPB67UHcHoSxsbhhHUPxW6QkWSo.webp" src="https://oss.onani.cn/fuwari-blog/img/3abdda195c58812866d49879c683a044e8acf7f8.webp" /></p>
+<p><img alt="QmSt8aFtaeEprJHASEiNPB67UHcHoSxsbhhHUPxW6QkWSo.webp" src="https://oss.onani.cn/fuwari-blog/img/3abdda195c58812866d49879c683a044e8acf7f8.webp"></p>
 </li>
 </ol>
-<p><img alt="QmNkMhDhpPLkYCpVhE1ov7Q6A34uWDvraCqNvuTqaCkujT.webp" src="https://oss.onani.cn/fuwari-blog/img/f90fccfe1db62aff7a0a722cd3c5c319da563ae2.webp" /></p>
-<p>在 cmd 中输入<code>alist.exe server</code>并且不要关闭窗口，运行成功后如图<img alt="QmdzyY8xbic8jdnZEXegefoZPeizqHa4ZkdMnRKoguBMkf.webp" src="https://oss.onani.cn/fuwari-blog/img/2c0ec8fb4de7f2a9a1b8107e3506cb5a8d7d7eff.webp" /></p>
+<p><img alt="QmNkMhDhpPLkYCpVhE1ov7Q6A34uWDvraCqNvuTqaCkujT.webp" src="https://oss.onani.cn/fuwari-blog/img/f90fccfe1db62aff7a0a722cd3c5c319da563ae2.webp"></p>
+<p>在 cmd 中输入<code>alist.exe server</code>并且不要关闭窗口，运行成功后如图<img alt="QmdzyY8xbic8jdnZEXegefoZPeizqHa4ZkdMnRKoguBMkf.webp" src="https://oss.onani.cn/fuwari-blog/img/2c0ec8fb4de7f2a9a1b8107e3506cb5a8d7d7eff.webp"></p>
 <ol>
 <li>
-<p>打开浏览器，输入<code>localhost:5244</code>即可进入 AList 控制台，如图<img alt="QmUBFKu7mCiRneCrsTNPxTH6S4gxwtXf9cwLzf4dKW9LLR.webp" src="https://oss.onani.cn/fuwari-blog/img/867fe02a124c886777d4ba64f6d1e4498c686709.webp" /></p>
+<p>打开浏览器，输入<code>localhost:5244</code>即可进入 AList 控制台，如图<img alt="QmUBFKu7mCiRneCrsTNPxTH6S4gxwtXf9cwLzf4dKW9LLR.webp" src="https://oss.onani.cn/fuwari-blog/img/867fe02a124c886777d4ba64f6d1e4498c686709.webp"></p>
 </li>
 <li>
-<p>用户名：<code>admin</code>密码：<code>在cmd窗口中，如图</code>。你可以使用鼠标左键在终端中框选内容然后单击鼠标右键进行复制操作<img alt="QmVH3qZYo3QE6anNHymwkikq5MSeJphrZNR7RCH5jpP3wn.webp" src="https://oss.onani.cn/fuwari-blog/img/8cedc3475cd8358507587de8a6b2a91980fe9af4.webp" /></p>
+<p>用户名：<code>admin</code>密码：<code>在cmd窗口中，如图</code>。你可以使用鼠标左键在终端中框选内容然后单击鼠标右键进行复制操作<img alt="QmVH3qZYo3QE6anNHymwkikq5MSeJphrZNR7RCH5jpP3wn.webp" src="https://oss.onani.cn/fuwari-blog/img/8cedc3475cd8358507587de8a6b2a91980fe9af4.webp"></p>
 </li>
 <li>
 <p>注意，在 cmd 中，鼠标左键点击或拖动 cmd 的终端界面会导致进入选择状态，程序将会被系统阻塞，<strong>需要在终端界面点按鼠标右键解除</strong>。若进程被阻塞，cmd 的进程名会多一个<strong>选择</strong>，请注意。如图是程序被阻塞的例子，<strong>在终端界面点按鼠标右键即可解除</strong>
-   <img alt="QmapESiqSEvbYq3AJs15yYvhemRxSHrJaccjTFr99muX6Z.webp" src="https://oss.onani.cn/fuwari-blog/img/afb945ff610c0463ee0db97f52bc42a865b00603.webp" /></p>
+   <img alt="QmapESiqSEvbYq3AJs15yYvhemRxSHrJaccjTFr99muX6Z.webp" src="https://oss.onani.cn/fuwari-blog/img/afb945ff610c0463ee0db97f52bc42a865b00603.webp"></p>
 </li>
 <li>
-<p>现在，你已经成功以管理员身份登入了 AList单击最下面的<strong>管理</strong><img alt="QmfNE53GThdjVrh4q64MJcZqwcGPD7UtcYTNw9bVBaSEaF.webp" src="https://oss.onani.cn/fuwari-blog/img/eb0c3753205f42133445dfcee5f1291debd6c649.webp" /></p>
+<p>现在，你已经成功以管理员身份登入了 AList单击最下面的<strong>管理</strong><img alt="QmfNE53GThdjVrh4q64MJcZqwcGPD7UtcYTNw9bVBaSEaF.webp" src="https://oss.onani.cn/fuwari-blog/img/eb0c3753205f42133445dfcee5f1291debd6c649.webp"></p>
 </li>
 <li>
-<p>你会进入到如图界面。尽管 AList 运行在本地，也建议更改你的用户名和密码<img alt="QmNdD8UU8fkVDBz5dXdJhCF2fZg8P1FwrcMaaTsG6a7ENy.webp" src="https://oss.onani.cn/fuwari-blog/img/3bde577194580e4d17aa457231360733175e2b0d.webp" /></p>
+<p>你会进入到如图界面。尽管 AList 运行在本地，也建议更改你的用户名和密码<img alt="QmNdD8UU8fkVDBz5dXdJhCF2fZg8P1FwrcMaaTsG6a7ENy.webp" src="https://oss.onani.cn/fuwari-blog/img/3bde577194580e4d17aa457231360733175e2b0d.webp"></p>
 </li>
 <li>
-<p>更改账密，重新以新账密登录<img alt="Qmas7pMiPR2FNTXheBT1xGNUpzDiSzv7J7yd6oCuT17yad.webp" src="https://oss.onani.cn/fuwari-blog/img/a5ba3b6cc73002f3e96b6aab8c4e252f697802da.webp" /></p>
+<p>更改账密，重新以新账密登录<img alt="Qmas7pMiPR2FNTXheBT1xGNUpzDiSzv7J7yd6oCuT17yad.webp" src="https://oss.onani.cn/fuwari-blog/img/a5ba3b6cc73002f3e96b6aab8c4e252f697802da.webp"></p>
 </li>
 <li>
-<p>进入控制台，然后单击存储，如图<img alt="QmS4gGyCM1j3RXgHEPuZ1zTbLAvGtVBEiPXJe9QMF3dD2D.webp" src="https://oss.onani.cn/fuwari-blog/img/bb8fc961e43dffa99994c0d0e703ba98fc01b85a.webp" /></p>
+<p>进入控制台，然后单击存储，如图<img alt="QmS4gGyCM1j3RXgHEPuZ1zTbLAvGtVBEiPXJe9QMF3dD2D.webp" src="https://oss.onani.cn/fuwari-blog/img/bb8fc961e43dffa99994c0d0e703ba98fc01b85a.webp"></p>
 </li>
 <li>
-<p>选择添加，如图<img alt="QmRDVxt8WbrVkHavgFNXj3qC86ysw6sSZhPy3Uf2ixKp2E.webp" src="https://oss.onani.cn/fuwari-blog/img/2807d1dbc07fed008c8177cd3b2b89bfd03cc8be.webp" /></p>
+<p>选择添加，如图<img alt="QmRDVxt8WbrVkHavgFNXj3qC86ysw6sSZhPy3Uf2ixKp2E.webp" src="https://oss.onani.cn/fuwari-blog/img/2807d1dbc07fed008c8177cd3b2b89bfd03cc8be.webp"></p>
 </li>
 <li>
-<p>详细配置如图。挂载路径即 AList 展示路径，推荐使用<code>/R2/你的存储桶名字</code>，地区为<code>auto</code><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-16-11-37-53-image.webp" />回到主页，如图<img alt="QmSnR9Ptrssx4nqk9qCvhFUNKQyQqJiN7GRscwoj4Dczgj.webp" src="https://oss.onani.cn/fuwari-blog/img/65265d29e91f146ecbe3d92218eb9af49eac1c8b.webp" /></p>
+<p>详细配置如图。挂载路径即 AList 展示路径，推荐使用<code>/R2/你的存储桶名字</code>，地区为<code>auto</code><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-16-11-37-53-image.webp">回到主页，如图<img alt="QmSnR9Ptrssx4nqk9qCvhFUNKQyQqJiN7GRscwoj4Dczgj.webp" src="https://oss.onani.cn/fuwari-blog/img/65265d29e91f146ecbe3d92218eb9af49eac1c8b.webp"></p>
 </li>
 <li>
-<p>尝试上传文件，如图<img alt="QmPqFsmZNNnh4jNyLS7X3h8Zr6ZCVqTqGVwTxmPDdbmrGW.webp" src="https://oss.onani.cn/fuwari-blog/img/061c995a66c34ebc341f692d4eb82d5657d791d6.webp" /></p>
+<p>尝试上传文件，如图<img alt="QmPqFsmZNNnh4jNyLS7X3h8Zr6ZCVqTqGVwTxmPDdbmrGW.webp" src="https://oss.onani.cn/fuwari-blog/img/061c995a66c34ebc341f692d4eb82d5657d791d6.webp"></p>
 </li>
 <li>
-<p>可以看到，速度非常快<img alt="QmXfGK6aZjz741GrY8RfFfKMkUzDMB3xhx93PGZ9S1QycT.webp" src="https://oss.onani.cn/fuwari-blog/img/51d0a617cbda108ce6c12fb25f71fb5223a0cddb.webp" /></p>
+<p>可以看到，速度非常快<img alt="QmXfGK6aZjz741GrY8RfFfKMkUzDMB3xhx93PGZ9S1QycT.webp" src="https://oss.onani.cn/fuwari-blog/img/51d0a617cbda108ce6c12fb25f71fb5223a0cddb.webp"></p>
 </li>
 <li>
 <p>为你的图床创建目录以分类横屏和竖屏图等，以便下文使用 Workers 连接 R2 来调用。后文我将使用R2的<code>/ri/h</code> 路径作为横屏随机图目录、<code>/ri/v</code> 路径作为竖屏随机图目录</p>
 </li>
 </ol>
-<p><img alt="QmNdD8UU8fkVDBz5dXdJhCF2fZg8P1FwrcMaaTsG6a7ENy.webp" src="https://oss.onani.cn/fuwari-blog/img/3bde577194580e4d17aa457231360733175e2b0d.webp" /></p>
-<h3><strong>创建 Workers，连接 R2</strong></h3>
+<p><img alt="QmNdD8UU8fkVDBz5dXdJhCF2fZg8P1FwrcMaaTsG6a7ENy.webp" src="https://oss.onani.cn/fuwari-blog/img/3bde577194580e4d17aa457231360733175e2b0d.webp"></p>
+<h3 id="workers-r2"><strong>创建 Workers，连接 R2</strong></h3>
 <ol>
 <li>
-<p>进入<a href="https://dash.cloudflare.com/">Cloudflare 仪表盘</a>，进入 Workers 和 Pages 页面，如图<img alt="QmW5UaUap8T2R37u5dzmKGLmUgk4qKnSMFwHBVHqvVbkVA.webp" src="https://oss.onani.cn/fuwari-blog/img/49ccd51771082fdc94eecb270caf987d257cd987.webp" /></p>
+<p>进入<a href="https://dash.cloudflare.com/">Cloudflare 仪表盘</a>，进入 Workers 和 Pages 页面，如图<img alt="QmW5UaUap8T2R37u5dzmKGLmUgk4qKnSMFwHBVHqvVbkVA.webp" src="https://oss.onani.cn/fuwari-blog/img/49ccd51771082fdc94eecb270caf987d257cd987.webp"></p>
 </li>
 <li>
-<p>单击创建，选择创建 Workers，名称自取，单击部署<img alt="QmVvLv5n41QQfDfYiVWYRpsfw7TVNGy1BYuv5e8vBRhKLA.webp" src="https://oss.onani.cn/fuwari-blog/img/95102dd09752a103d8022b1f281538e729b7a448.webp" /></p>
+<p>单击创建，选择创建 Workers，名称自取，单击部署<img alt="QmVvLv5n41QQfDfYiVWYRpsfw7TVNGy1BYuv5e8vBRhKLA.webp" src="https://oss.onani.cn/fuwari-blog/img/95102dd09752a103d8022b1f281538e729b7a448.webp"></p>
 </li>
 <li>
-<p>选择编辑代码<img alt="QmTbRifzXQ593DGyjFQMbA9exyNp2iAeAg4zbVrfFimQc4.webp" src="https://oss.onani.cn/fuwari-blog/img/fa78af856b3ff3798c77a55be15b2644dec944c1.webp" /></p>
+<p>选择编辑代码<img alt="QmTbRifzXQ593DGyjFQMbA9exyNp2iAeAg4zbVrfFimQc4.webp" src="https://oss.onani.cn/fuwari-blog/img/fa78af856b3ff3798c77a55be15b2644dec944c1.webp"></p>
 </li>
 <li>
 <p>粘贴代码（创建随机横屏图）：</p>
 </li>
 </ol>
-<p>```
-export default {
+<pre class="codehilite"><code>export default {
   async fetch(request, env, ctx) {
     // R2 bucket 配置
-    const bucket = env.MY_BUCKET;</p>
-<pre><code>try {
-  // 列出 /ri/h 目录下的所有对象
-  const objects = await bucket.list({ prefix: 'ri/h/' });
+    const bucket = env.MY_BUCKET;
 
-  // 从列表中随机选择一个对象
-  const items = objects.objects;
-  if (items.length === 0) {
-    return new Response('No images found', { status: 404 });
-  }
-  const randomItem = items[Math.floor(Math.random() * items.length)];
+    try {
+      // 列出 /ri/h 目录下的所有对象
+      const objects = await bucket.list({ prefix: 'ri/h/' });
 
-  // 获取选中对象
-  const object = await bucket.get(randomItem.key);
+      // 从列表中随机选择一个对象
+      const items = objects.objects;
+      if (items.length === 0) {
+        return new Response('No images found', { status: 404 });
+      }
+      const randomItem = items[Math.floor(Math.random() * items.length)];
 
-  if (!object) {
-    return new Response('Image not found', { status: 404 });
-  }
+      // 获取选中对象
+      const object = await bucket.get(randomItem.key);
 
-  // 设置适当的 Content-Type
-  const headers = new Headers();
-  headers.set('Content-Type', object.httpMetadata.contentType || 'image/jpeg');
+      if (!object) {
+        return new Response('Image not found', { status: 404 });
+      }
 
-  // 返回图片内容
-  return new Response(object.body, { headers });
-} catch (error) {
-  console.error('Error:', error);
-  return new Response('Internal Server Error', { status: 500 });
-}
-</code></pre>
-<p>},
+      // 设置适当的 Content-Type
+      const headers = new Headers();
+      headers.set('Content-Type', object.httpMetadata.contentType || 'image/jpeg');
+
+      // 返回图片内容
+      return new Response(object.body, { headers });
+    } catch (error) {
+      console.error('Error:', error);
+      return new Response('Internal Server Error', { status: 500 });
+    }
+  },
 };
-```</p>
+</code></pre>
+
 <ol>
 <li>
-<p>点击左侧的文件图标<img alt="QmQGQTiTXSESU2TSJ6tc3KrzWU4KABKqn6QZ1GdWqKnWmc.webp" src="https://oss.onani.cn/fuwari-blog/img/b02f29fbafb44ad36a0fa770d013069a374394a8.webp" /></p>
+<p>点击左侧的文件图标<img alt="QmQGQTiTXSESU2TSJ6tc3KrzWU4KABKqn6QZ1GdWqKnWmc.webp" src="https://oss.onani.cn/fuwari-blog/img/b02f29fbafb44ad36a0fa770d013069a374394a8.webp"></p>
 </li>
 <li>
 <p>在<code>wrangler.toml</code>中填入：</p>
 </li>
 </ol>
-<p><code>[[r2_buckets]]
-binding = "MY_BUCKET"
-bucket_name = "114514"</code></p>
+<pre class="codehilite"><code>[[r2_buckets]]
+binding = &quot;MY_BUCKET&quot;
+bucket_name = &quot;114514&quot;
+</code></pre>
+
 <ol>
 <li>
-<p>保存修改，点击右上角的部署<img alt="QmP7hXdtenrJrzJRRePHQATGtyAsZEr5MkMsboXvmNUxTx.webp" src="https://oss.onani.cn/fuwari-blog/img/6751c7b5122b938e01087d1bed629fcad1182a10.webp" /></p>
+<p>保存修改，点击右上角的部署<img alt="QmP7hXdtenrJrzJRRePHQATGtyAsZEr5MkMsboXvmNUxTx.webp" src="https://oss.onani.cn/fuwari-blog/img/6751c7b5122b938e01087d1bed629fcad1182a10.webp"></p>
 </li>
 <li>
-<p>在设置 - 变量找到 R2 存储桶绑定，添加你的存储桶，变量名即上文的<code>MY_BUCKET</code><img alt="QmStitSyATnA8sY9tTgZaXXqmqkGPUtZmMxn9KjbFQzgTc.webp" src="https://oss.onani.cn/fuwari-blog/img/572f1c9946b5b6de5350c708e579d9887949b6e9.webp" /></p>
+<p>在设置 - 变量找到 R2 存储桶绑定，添加你的存储桶，变量名即上文的<code>MY_BUCKET</code><img alt="QmStitSyATnA8sY9tTgZaXXqmqkGPUtZmMxn9KjbFQzgTc.webp" src="https://oss.onani.cn/fuwari-blog/img/572f1c9946b5b6de5350c708e579d9887949b6e9.webp"></p>
 </li>
 <li>
-<p>在设置 - 触发器添加你的自定义域名以便访问<img alt="QmUMxtkCiKsgFw8afRUGREFztXE9D5W6FmCbAUB7DaVH5o.webp" src="https://oss.onani.cn/fuwari-blog/img/706b3acbb372307713e38c96fc867f4e96234fd7.webp" /></p>
+<p>在设置 - 触发器添加你的自定义域名以便访问<img alt="QmUMxtkCiKsgFw8afRUGREFztXE9D5W6FmCbAUB7DaVH5o.webp" src="https://oss.onani.cn/fuwari-blog/img/706b3acbb372307713e38c96fc867f4e96234fd7.webp"></p>
 </li>
 </ol>
-<p><img alt="QmPF9iCoq6n8Jj2Z6kPkdJSCm45VJystZoYcir55yceCQo.webp" src="https://oss.onani.cn/fuwari-blog/img/1a6fa505881591a294f0b4ef4a1940e40fe57ab9.webp" /></p>
+<p><img alt="QmPF9iCoq6n8Jj2Z6kPkdJSCm45VJystZoYcir55yceCQo.webp" src="https://oss.onani.cn/fuwari-blog/img/1a6fa505881591a294f0b4ef4a1940e40fe57ab9.webp"></p>
 <ol>
-<li>访问效果，每次刷新都不一样<img alt="QmQgEdjXxF9oph2jYKzFMJToX9WfG11jUmPiNJnjhYVN4N.webp" src="https://oss.onani.cn/fuwari-blog/img/0ba1efee8174e0d3db761bbd613a7b94b9738cee.webp" /></li>
+<li>访问效果，每次刷新都不一样<img alt="QmQgEdjXxF9oph2jYKzFMJToX9WfG11jUmPiNJnjhYVN4N.webp" src="https://oss.onani.cn/fuwari-blog/img/0ba1efee8174e0d3db761bbd613a7b94b9738cee.webp"></li>
 </ol>
-<h3><strong>通过使用 HTML 的 <code>&lt;img&gt;</code> 标签引用即可达到开头的效果</strong></h3>
+<h3 id="html-img"><strong>通过使用 HTML 的 <code>&lt;img&gt;</code> 标签引用即可达到开头的效果</strong></h3>
 <p>如：<code>&lt;img src="你的域名" alt=""&gt;</code>
-<img title="" src="https://hrandom.onani.cn" alt="loading-ag-4760"></p><footer>
+<img title="" src="https://hrandom.onani.cn" alt="loading-ag-4760"></p><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>

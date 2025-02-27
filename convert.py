@@ -17,7 +17,10 @@ def convert_md_to_html(md_filepath):
                 metadata = yaml.safe_load(raw_meta) or {}
             except Exception as e:
                 print(f"Error parsing YAML metadata: {e}")
-    html = markdown.markdown(md_text)
+    # 使用扩展支持 fenced code block，并指定输出格式为 html5
+    html = markdown.markdown(md_text, 
+                               extensions=['fenced_code', 'codehilite', 'tables', 'toc'],
+                               output_format='html5')
     # 注入许可协议信息
     license_html = "<div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>\n"
     # 构造 head 元素
@@ -37,7 +40,7 @@ def convert_md_to_html(md_filepath):
     if metadata.get('category'):
         head_meta += f"<meta name='category' content='{metadata.get('category')}'>\n"
     # 添加内嵌CSS，使图片适应视窗
-    css = "<style>img { max-width: 100%; height: auto; }</style>\n"
+    css = "<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>\n"
     # 构造用于显示所有元数据的 HTML 片段
     meta_html = "<div id='metadata'>\n"
     for key, value in metadata.items():
@@ -60,6 +63,7 @@ def convert_md_to_html(md_filepath):
                    "</head>\n<body>\n" +
                    meta_html +    # 插入元数据展示
                    html +
+                   license_html + # 注入许可协议信息
                    footer_html +  # 注入 footer.html 内容
                    "\n</body>\n</html>")
     return html_output

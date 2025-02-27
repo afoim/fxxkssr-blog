@@ -8,7 +8,7 @@
 <meta name='category' content='开发'>
 <title>让我们来探讨一下如何绕过GFW</title>
 <!-- 可引入模板CSS -->
-<style>img { max-width: 100%; height: auto; }</style>
+<style>img { max-width: 100%; height: auto; } pre, code { white-space: pre-wrap; }</style>
 </head>
 <body>
 <div id='metadata'>
@@ -22,7 +22,7 @@
 <p><strong>Lang:</strong> </p>
 </div>
 <hr>
-<h3>首先，我们要知道GFW是如何封锁我们的流量的</h3>
+<h3 id="gfw">首先，我们要知道GFW是如何封锁我们的流量的</h3>
 <ol>
 <li>
 <p>IP黑洞：目前无解，但仅对部分服务黑洞，如谷歌系（谷歌、推特、YouTube等）</p>
@@ -37,52 +37,53 @@
 <p>SNI阻断：在客户端与服务器建立加密连接前，客户端会发送 <code>Client Hello</code> 报文，而这个报文是明文，并且一般都会携带 <code>server_name</code> ，GFW可以知道你要访问哪个网站，对不在白名单（如：discord.com）的域名进行阻断。因为 <code>server_name</code> 实际上是一个扩展，并不强制，你可以不发送它来规避SNI阻断</p>
 </li>
 </ol>
-<h3>那么，让我们分析一下GFW对于不同网站的封锁情况</h3>
+<h3 id="gfw_1">那么，让我们分析一下GFW对于不同网站的封锁情况</h3>
 <p>我们使用WireShark进行抓包</p>
 <ul>
 <li>
 <p>首先尝试访问 <code>www.baidu.com</code> 这是一个没有被GFW封锁的域名</p>
 </li>
 <li>
-<p>我们先ping一下<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-16-48-image.webp" /></p>
+<p>我们先ping一下<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-16-48-image.webp"></p>
 </li>
 <li>
 <p>得到ip： <code>2408:873d:22:18ac:0:ff:b021:1393</code> </p>
 </li>
 <li>
-<p>通过Hosts强制绑定<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-18-10-image.webp" /></p>
+<p>通过Hosts强制绑定<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-18-10-image.webp"></p>
 </li>
 <li>
-<p>通过WireShark进行抓包，可以看到，客户端发送的 <code>Client Hello</code> 可以清晰地看到 <code>Server Name</code> 字段，并且也能正常收到 <code>Server Hello</code> 然后双方便开始通信<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-24-03-image.webp" /></p>
+<p>通过WireShark进行抓包，可以看到，客户端发送的 <code>Client Hello</code> 可以清晰地看到 <code>Server Name</code> 字段，并且也能正常收到 <code>Server Hello</code> 然后双方便开始通信<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-24-03-image.webp"></p>
 </li>
 <li>
-<p>查看浏览器，网站正常访问<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-35-29-image.webp" /></p>
+<p>查看浏览器，网站正常访问<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-35-29-image.webp"></p>
 </li>
 <li>
 <p>让我们试试访问 <code>discord.com</code></p>
 </li>
 <li>
-<p>我们先ping一下，可以发现，域名和解析到的IP均不通<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-27-57-image.webp" /></p>
+<p>我们先ping一下，可以发现，域名和解析到的IP均不通<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-27-57-image.webp"></p>
 </li>
 <li>
-<p>此时我们尝试使用 <code>itdog.cn</code> 进行v4 ping，并且依次对解析出的域名进行ping<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-28-51-image.webp" /></p>
+<p>此时我们尝试使用 <code>itdog.cn</code> 进行v4 ping，并且依次对解析出的域名进行ping<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-28-51-image.webp"></p>
 </li>
 <li>
-<p>可见，第一个IP通<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-29-40-image.webp" /></p>
+<p>可见，第一个IP通<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-29-40-image.webp"></p>
 </li>
 <li>
-<p>强制绑定Hosts，尝试抓包<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-35-58-image.webp" /><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-31-49-image.webp" /></p>
+<p>强制绑定Hosts，尝试抓包<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-35-58-image.webp"><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-31-49-image.webp"></p>
 </li>
 <li>
-<p>可见，在通过强制Hosts绑定后，在客户端发送 <code>Client Hello</code> 后被GFW检测到<code>Server Name</code> 字段，然后GFW向客户端发送一个 <code>RST</code> 报文，即要求重置客户端连接。在客户端侧，则会收到 <code>ERR_CONNECTION_RESET</code> 即：连接已重置。用户无法访问网页。<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-33-23-image.webp" /></p>
+<p>可见，在通过强制Hosts绑定后，在客户端发送 <code>Client Hello</code> 后被GFW检测到<code>Server Name</code> 字段，然后GFW向客户端发送一个 <code>RST</code> 报文，即要求重置客户端连接。在客户端侧，则会收到 <code>ERR_CONNECTION_RESET</code> 即：连接已重置。用户无法访问网页。<img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-33-23-image.webp"></p>
 </li>
 </ul>
-<h3>继续，尝试发送空 <code>Server Name</code> 报文</h3>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-41-37-image.webp" /></p>
-<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-41-54-image.webp" /></p>
+<h3 id="server-name">继续，尝试发送空 <code>Server Name</code> 报文</h3>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-41-37-image.webp"></p>
+<p><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-41-54-image.webp"></p>
 <p>成功访问。在WireShark中并未发现 <code>Server Name</code> 字段</p>
-<h3>杀手锏，tcpioneer</h3>
-<p>它通过魔改TCP数据包使得GFW无法检测，并且WireShark也无法抓取到<code>Client Hello</code>报文，但是仍然能建立连接，即服务端发送<code>Server Hello</code><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-46-44-image.webp" /></p><footer>
+<h3 id="tcpioneer">杀手锏，tcpioneer</h3>
+<p>它通过魔改TCP数据包使得GFW无法检测，并且WireShark也无法抓取到<code>Client Hello</code>报文，但是仍然能建立连接，即服务端发送<code>Server Hello</code><img alt="" src="https://oss.onani.cn/fuwari-blog/img/2024-10-21-20-46-44-image.webp"></p><div class='license'><p>许可协议<br>CC BY-NC-SA 4.0</p></div>
+<footer>
     <hr>
     <div id="tcomment"></div>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
