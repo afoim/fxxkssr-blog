@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- 全局头部注入 -->
+<meta charset='utf-8'>
+<link rel="icon" type="image/png" href="https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&amp;spec=5">
+<style>
+    img { max-width: 100%; height: auto; }
+    pre, code { white-space: pre-wrap; }
+    .back-home {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+        z-index: 1000;
+    }
+    .back-home:hover {
+        background: #f5f5f5;
+    }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 如果不是首页，则添加返回首页的链接
+    if (!window.location.href.endsWith('index.html')) {
+        const backLink = document.createElement('a');
+        backLink.href = 'index.html';
+        backLink.className = 'back-home';
+        backLink.textContent = '返回首页';
+        document.body.appendChild(backLink);
+    }
+});
+</script>
 <meta charset='utf-8'>
 <meta name='description' content='GFW俗称中国网络国家防火墙，它运用多种技术阻断境内对境外某些网站的访问，比如谷歌、Discord。但对于某些阻断方式，通过一些手段，我们可以绕过GFW来进行访问'>
 <meta name='keywords' content='tcpioneer'>

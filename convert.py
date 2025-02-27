@@ -80,8 +80,15 @@ def convert_md_to_html(md_filepath):
     if os.path.exists(footer_path):
         with open(footer_path, "r", encoding="utf-8") as f:
             footer_html = f.read()
+    # 读取全局模板
+    global_template = ""
+    template_path = os.path.join(os.getcwd(), "template", "global.html")
+    if os.path.exists(template_path):
+        with open(template_path, "r", encoding="utf-8") as f:
+            global_template = f.read()
     # 模板暂时留空，可引入 template 下的 CSS
     html_output = ("<!DOCTYPE html>\n<html>\n<head>\n" +
+                   global_template +  # 注入全局模板
                    head_meta +
                    f"<title>{title}</title>\n" +
                    "<!-- 可引入模板CSS -->\n" +
