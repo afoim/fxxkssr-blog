@@ -54,6 +54,59 @@
             font-size: 14px;
         }
     }
+    /* 代码块样式 */
+    .codehilite {
+        position: relative;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .codehilite pre {
+        margin: 0;
+        padding-top: 25px;
+    }
+
+    .codehilite code {
+        font-family: Consolas, Monaco, 'Andale Mono', monospace;
+    }
+
+    /* 复制按钮样式 */
+    .copy-btn {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        padding: 4px 8px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+        background: #eee;
+    }
+
+    .copy-btn.copied {
+        background: #4CAF50;
+        color: white;
+        border-color: #4CAF50;
+    }
+
+    @media screen and (max-width: 768px) {
+        .codehilite {
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .codehilite pre {
+            padding-top: 30px;
+        }
+    }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -65,5 +118,35 @@ document.addEventListener('DOMContentLoaded', function() {
         backLink.textContent = '返回首页';
         document.body.appendChild(backLink);
     }
+
+    // 添加代码复制功能
+    document.querySelectorAll('.codehilite').forEach(block => {
+        // 创建复制按钮
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.textContent = '复制';
+        
+        // 添加复制功能
+        button.addEventListener('click', async function() {
+            const code = block.querySelector('code').textContent;
+            try {
+                await navigator.clipboard.writeText(code);
+                button.textContent = '已复制！';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = '复制';
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                button.textContent = '复制失败';
+                setTimeout(() => {
+                    button.textContent = '复制';
+                }, 2000);
+            }
+        });
+        
+        // 将按钮添加到代码块
+        block.insertBefore(button, block.firstChild);
+    });
 });
 </script>
