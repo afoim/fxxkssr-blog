@@ -141,6 +141,21 @@
         })
         .catch(error => console.error('Error loading footer:', error));
 // 定期获取最新提交
+function formatDateTime(utcString) {
+    const date = new Date(utcString);
+    // 转换为 UTC+8
+    date.setHours(date.getHours() + 8);
+    return date.toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'UTC'
+    });
+}
+
 function fetchLatestCommit() {
     const commitList = document.getElementById('commitList');
     const statusSpan = document.getElementById('commitStatus');
@@ -169,7 +184,7 @@ function fetchLatestCommit() {
         if(data.length > 0) {
             const commit = data[0];
             const author = commit.commit.author.name;
-            const date = commit.commit.author.date;
+            const date = formatDateTime(commit.commit.author.date);  // 使用格式化函数
             const message = commit.commit.message;
             const url = commit.html_url;
             const li = document.createElement('li');
