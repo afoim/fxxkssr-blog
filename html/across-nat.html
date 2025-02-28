@@ -110,6 +110,23 @@
             padding-top: 30px;
         }
     }
+
+    /* 图片加载动画样式 */
+    img:not([src]) {
+        opacity: 0;
+    }
+    
+    img[loading] {
+        opacity: 0.5;
+        background: url('/assets/loading.avif') center center no-repeat;
+        background-size: 32px;
+        min-height: 32px;
+        transition: opacity 0.3s;
+    }
+    
+    img.loaded {
+        opacity: 1;
+    }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -150,6 +167,26 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 将按钮添加到代码块
         block.insertBefore(button, block.firstChild);
+    });
+
+    // 添加图片加载动画
+    document.querySelectorAll('img').forEach(img => {
+        // 设置加载属性
+        img.setAttribute('loading', 'lazy');
+        
+        // 保存原始src
+        const originalSrc = img.src;
+        // 清空src以触发加载动画
+        img.removeAttribute('src');
+        
+        // 创建新图片预加载
+        const tempImage = new Image();
+        tempImage.onload = function() {
+            // 图片加载完成后恢复src并添加loaded类
+            img.src = originalSrc;
+            img.classList.add('loaded');
+        };
+        tempImage.src = originalSrc;
     });
 });
 </script>
@@ -379,7 +416,7 @@ dpkg -i cloudflared-linux-amd64.deb
     })
     </script>
     <hr>
-    <p>2025 AcoFork  版权所有 / Powerby fxxkssr-blog / <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">许可协议 · CC BY-NC-SA 4.0</a></p>
+    <p>2025 AcoFork  版权所有 / Powerby <a href="https://github.com/afoim/fxxkssr-blog">fxxkssr-blog</a> / <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">许可协议 · CC BY-NC-SA 4.0</a></p>
 </footer>
 
 </body>
